@@ -49,15 +49,15 @@
       <div class="IcontainerTopRow">
         <div class="IcontainerTopTitle">查询列表</div>
         <div class="IcontainerTopBtns">
-          <el-button type="primary" @click="freshTableData()"
+          <el-button type="primary" @click="getDataList()"
             >刷新数据</el-button
           >
-          <el-button type="primary" @click="addNewQuestion()">{{
-            addButtonValue
-          }}</el-button>
+          <el-button type="primary" @click="addNewQuestion()"
+            >添加选择题</el-button
+          >
         </div>
       </div>
-      <el-table
+      <!-- <el-table
         fit
         border
         :data="this.$store.state.tableData"
@@ -79,11 +79,6 @@
         <el-table-column align="center" label="操作" width="150">
           <template slot-scope="scope">
             <el-button
-              size="mini"
-              @click="handleShow(scope.$index, scope.row)"
-              >查看</el-button
-            >
-            <el-button
               type="primary"
               size="mini"
               @click="handleEdit(scope.$index, scope.row)"
@@ -97,32 +92,34 @@
             >
           </template>
         </el-table-column>
-      </el-table>
+      </el-table> -->
+      <Table border ref="table" :height="table.height" :columns="table.columns" :data="table.data">
+        <template slot-scope="{ row, index }" slot="action">
+          <Button
+            type="primary"
+            size="small"
+            style="margin-right: 5px"
+            @click="handleEdit(index, row)">编辑</Button>
+          <Button
+            type="error"
+            size="small"
+            @click="handleDelete(index, row)">删除</Button>
+        </template>
+      </Table>
     </div>
-    <el-row class="showquestions_serch_add">
-      <el-col :span="24">
-        <div class="grid-content bg-purple">
-          <el-pagination
-            @current-change="handleCurrentChange"
-            :current-page="query.pageCurrent"
-            :page-size="query.pageSize"
-            layout="total, prev, pager, next, jumper"
-            :total="this.$store.state.total"
-          >
-          </el-pagination>
-        </div>
-      </el-col>
-    </el-row>
+    <Row class="showquestions_serch_add">
+      <Col :span="24">
+        <Page :total="this.$store.state.total" show-total :page-size="query.pageSize" @on-change="handleCurrentChange" />
+      </Col>
+    </Row>
     <singleQsForm ref="singleQsForm" @callBack="handleQsCallBack" />
-    <decideQsForm ref="decideQsForm" @callBack="handleQsCallBack" />
-    <vacancyQsForm ref="vacancyQsForm" @callBack="handleQsCallBack" />
   </div>
 </template>
 
 <script>
-import singleQsForm from './single/singleQsForm'
-import decideQsForm from './decide/decideQsForm'
-import vacancyQsForm from './vacancy/vacancyQsFrom'
+import singleQsForm from "./single/singleQsForm";
+import axios from 'axios'
+import Axios from 'axios';
 export default {
   data() {
     return {
@@ -136,13 +133,9 @@ export default {
       tableHeight: 0,
       data: null,
       currentPage4: 1,
-      input3: "",
-      select: "",
       loading: false,
-      addButtonValue: "",
-      FormTitle: "",
       // 现在的qsType
-      questionType: '',
+      questionType: "",
       // 章节
       chapterList: [
         {
@@ -201,6 +194,77 @@ export default {
           label: "第十一章",
         },
       ],
+      table: {
+        height: 575,
+        columns: [
+          {
+            type: "selection",
+            width: 60,
+            align: "center",
+          },
+          {
+            type: "index",
+            title: "序号",
+            width: 80,
+            align: "center",
+          },
+          {
+            title: "问题",
+            key: "Question",
+            align: "center",
+            tooltip: true,
+          },
+          {
+            title: "选项A",
+            key: "Item1",
+            align: "center",
+            tooltip: true,
+          },
+          {
+            title: "选项B",
+            key: "Item2",
+            align: "center",
+            tooltip: true,
+          },
+          {
+            title: "选项C",
+            key: "Item3",
+            align: "center",
+            tooltip: true,
+          },
+          {
+            title: "选项D",
+            key: "Item4",
+            align: "center",
+            tooltip: true,
+          },
+          {
+            title: "知识点",
+            key: "KN",
+            align: "center",
+            tooltip: true,
+          },
+          {
+            title: "章节",
+            key: "Chapter",
+            align: "center",
+            tooltip: true,
+          },
+          {
+            title: "难度",
+            key: "difficulty",
+            align: "center",
+            tooltip: true,
+          },
+          {
+            title: "操作",
+            slot: "action",
+            width: 180,
+            align: "center",
+          },
+        ],
+        data: [],
+      },
     };
   },
   mounted() {
@@ -213,33 +277,29 @@ export default {
       this.tableHeight = document.body.clientHeight - 395 + "px";
     });
     this.questionType = window.localStorage.getItem("questionType");
-    let nowQuestionType = window.localStorage.getItem("questionType");
-    if (nowQuestionType.substring(0, 6) == "single") {
-      this.addButtonValue = "添加选择题";
-    } else if (nowQuestionType == "applicationQuestion") {
-      this.addButtonValue = "添加大题";
-    } else if (nowQuestionType.substring(0, 7) == "vacancy") {
-      this.addButtonValue = "添加填空题";
-    } else if (nowQuestionType == "decide") {
-      this.addButtonValue = "添加判断题";
-    }
-    this.freshTableData();
+    this.getDataList();
   },
   methods: {
     handleEdit(index, row) {
-      if (this.questionType.substring(0, 6) == "single") {
-       this.$refs.singleQsForm.init('update', row)
-      } else if (this.questionType == "applicationQuestion") {
-        this.$refs.singleQsForm.init('update', row)
-      } else if (this.questionType.substring(0, 7) == "vacancy") {
-        this.$refs.vacancyQsForm.init('update', row)
-      } else if (this.questionType == "decide") {
-        this.$refs.decideQsForm.init('update', row)
-      }
+      this.$refs.singleQsForm.init("update", row);
     },
-    freshTableData() {
-      this.$store.dispatch("get_PageInfo_AJAX");
-      this.$store.dispatch("get_listData_AJAX");
+    getDataList() {
+      this.$Spin.show()
+      axios({
+        url: "http://localhost:3000/getQuestion/api/getlist",
+        method: "POST",
+        data: {
+          questionNum: 10,
+          nowQuestionType: 'single_C1',
+        },
+      }).then(res=>{
+        for(let i = 0;i<res.data.result.data.length;i++) {
+          this.table.data.push(JSON.parse(res.data.result.data[i]))
+        }
+        this.$Spin.hide()
+      }).catch(err=>{
+        console.log(err)
+      })
     },
     handleDelete(index, row) {
       this.$store.commit("changeNowDeleteDataId", row.Id);
@@ -251,37 +311,18 @@ export default {
       this.$store.dispatch("get_listData_AJAX");
     },
     addNewQuestion() {
-      if (this.questionType.substring(0, 6) == "single") {
-       this.$refs.singleQsForm.init('add', {})
-      } else if (this.questionType == "applicationQuestion") {
-        this.$refs.singleQsForm.init('add', {})
-      } else if (this.questionType.substring(0, 7) == "vacancy") {
-        this.$refs.vacancyQsForm.init('add', {})
-      } else if (this.questionType == "decide") {
-        this.$refs.decideQsForm.init('add', {})
-      }
-    },
-    handleShow(index, row) {
-      if (this.questionType.substring(0, 6) == "single") {
-       this.$refs.singleQsForm.init('show', row)
-      } else if (this.questionType == "applicationQuestion") {
-        this.$refs.singleQsForm.init('show', row)
-      } else if (this.questionType.substring(0, 7) == "vacancy") {
-        this.$refs.vacancyQsForm.init('show', row)
-      } else if (this.questionType == "decide") {
-        this.$refs.decideQsForm.init('show', row)
-      }
+      this.$refs.singleQsForm.init("add", {});
     },
     // 处理添加的单选
-    handleQsCallBack(obj, type){
-      if (type === 'add') {
+    handleQsCallBack(obj, type) {
+      if (type === "add") {
         this.$store.commit("getAddData", obj);
         this.$store.dispatch("add_listData_AJAX");
-      } else if (type === 'update') {
+      } else if (type === "update") {
         this.$store.commit("getUpdateData", obj);
         this.$store.dispatch("update_listData_AJAX");
-      } 
-    }
+      }
+    },
   },
   beforeDestroy() {
     this.$store.state.isFromShow = false;
@@ -289,8 +330,6 @@ export default {
   },
   components: {
     singleQsForm,
-    decideQsForm,
-    vacancyQsForm
   },
 };
 </script>
@@ -298,8 +337,5 @@ export default {
 <style scoped>
 >>> .el-date-editor {
   width: 100% !important;
-}
->>>.el-button--mini {
-  padding: 5px 5px;
 }
 </style>
