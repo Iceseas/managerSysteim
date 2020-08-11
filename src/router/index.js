@@ -8,6 +8,9 @@ const routes = [
   {
     path: "/login",
     name: "login",
+    meta:{
+      allowBack: false
+    },
     component: () => import ('@/views/userlogin/login'),
   },
   {
@@ -27,7 +30,8 @@ const routes = [
           checkLogined: true,
           title: 'index',
           name:['首页'],
-          path:['/Managerindex/index']
+          path:['/Managerindex/index'],
+          allowBack: false
         },
       },
       {
@@ -38,7 +42,8 @@ const routes = [
           checkLogined: true,
           title: 'accesslog',
           name:['首页','访问记录'],
-          path:['/Managerindex/index','/Managerindex/accesslog']
+          path:['/Managerindex/index','/Managerindex/accesslog'],
+          allowBack: true
         },
       },
       {
@@ -49,7 +54,8 @@ const routes = [
           checkLogined: true,
           title: 'showallquestion',
           name:['首页','其他题型'],
-          path:['/Managerindex/index','/Managerindex/showallquestion']
+          path:['/Managerindex/index','/Managerindex/showallquestion'],
+          allowBack: true
         },
       },
       {
@@ -60,7 +66,8 @@ const routes = [
           checkLogined: true,
           title: 'showTable',
           name:['首页','其他题型','列表'],
-          path:['/Managerindex/index','/Managerindex/showallquestion','/Managerindex/showTable']
+          path:['/Managerindex/index','/Managerindex/showallquestion','/Managerindex/showTable'],
+          allowBack: true
         },
       },
       {
@@ -71,7 +78,8 @@ const routes = [
           checkLogined: true,
           title: 'subjectiveItem',
           name:['首页','主观题'],
-          path:['/Managerindex/index','/Managerindex/subjectiveItem']
+          path:['/Managerindex/index','/Managerindex/subjectiveItem'],
+          allowBack: true
         },
       },
       {

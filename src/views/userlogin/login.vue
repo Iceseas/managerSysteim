@@ -85,6 +85,10 @@ export default {
       managerpassword: "",
     };
   },
+  mounted(){
+    window.history.pushState('forward', null, '#'); //在IE中必须得有这两行
+          window.history.forward(1);
+  },
   methods: {
     handleShowLogin() {
       this.ishowimg = !this.ishowimg;

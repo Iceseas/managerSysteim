@@ -77,6 +77,7 @@ export default {
         title: "退出",
         content: "<p>确定要退出吗</p>",
         onOk: () => {
+          this.$router.replace("/login");
           this.$Spin.show();
           axios({
             url: "http://localhost:3000/ManagerCount/api/logOut",
@@ -112,6 +113,11 @@ export default {
               this.$Message.error(err.msg);
               this.$router.replace("/login");
             });
+           // 禁用后退
+          history.pushState(null, null, document.URL);
+          window.addEventListener("popstate",function(e) {  
+          history.pushState(null, null, document.URL);
+          }, false);
         },
         onCancel: () => {},
       });
