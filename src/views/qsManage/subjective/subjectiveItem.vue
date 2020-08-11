@@ -82,10 +82,12 @@
 				</div>
 			</div>
 		</div>
+		<markSubjective ref="markSubjective" @callBack="getSubjectiveData" />
 	</div>
 </template>
 
 <script>
+    import markSubjective from './common/markSubjective'
 	import showsubjectiveFrom from "./common/showSubjective_problem.vue";
 	export default {
 		data() {
@@ -110,6 +112,7 @@
 		},
 		components: {
 			showsubjectiveFrom: showsubjectiveFrom,
+			markSubjective
 		},
 		mounted() {
 			this.freshTableData();
@@ -124,10 +127,7 @@
 		},
 		methods: {
 			handleEdit(index, row) {
-				this.FormTitle = "查看主观题";
-				this.$store.state.isFromShow = true;
-				this.$store.state.SubjectiveFormShow = true;
-				this.data = row;
+				this.$refs.markSubjective.init(row)
 			},
 			freshTableData() {
 				this.$store.commit("changeNowQuestionType", "subjective_publish");

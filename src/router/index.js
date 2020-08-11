@@ -16,6 +16,7 @@ const routes = [
     component: () => import ('@/views/home/managerSystemIndex'),
     meta: {
       checkLogined: true,
+      title: 'Managerindex'
     },
     children: [
       {
@@ -24,6 +25,9 @@ const routes = [
         component: () => import ('@/views/home/managerSystemIndex/index'),
         meta: {
           checkLogined: true,
+          title: 'index',
+          name:['首页'],
+          path:['/Managerindex/index']
         },
       },
       {
@@ -32,6 +36,9 @@ const routes = [
         component: () => import ('@/views/manager/accesslog'),
         meta: {
           checkLogined: true,
+          title: 'accesslog',
+          name:['首页','访问记录'],
+          path:['/Managerindex/index','/Managerindex/accesslog']
         },
       },
       {
@@ -40,6 +47,9 @@ const routes = [
         component: () => import ('@/views/qsManage/otherQS/common/showallquestion'),
         meta: {
           checkLogined: true,
+          title: 'showallquestion',
+          name:['首页','其他题型'],
+          path:['/Managerindex/index','/Managerindex/showallquestion']
         },
       },
       {
@@ -48,6 +58,9 @@ const routes = [
         component: () => import ('@/views/qsManage/otherQS/showTable'),
         meta: {
           checkLogined: true,
+          title: 'showTable',
+          name:['首页','其他题型','列表'],
+          path:['/Managerindex/index','/Managerindex/showallquestion','/Managerindex/showTable']
         },
       },
       {
@@ -56,6 +69,9 @@ const routes = [
         component: () => import ('@/views/qsManage/subjective/subjectiveItem'),
         meta: {
           checkLogined: true,
+          title: 'subjectiveItem',
+          name:['首页','主观题'],
+          path:['/Managerindex/index','/Managerindex/subjectiveItem']
         },
       },
       {

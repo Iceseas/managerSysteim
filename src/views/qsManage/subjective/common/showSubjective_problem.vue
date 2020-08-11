@@ -11,7 +11,7 @@
           <el-input
             style="font-size:16px"
             id="remarkinput"
-            v-model="data.remark"
+            v-model="data.remark" 
             :value="data.remark"
             autosize
             :data-id="dataId"

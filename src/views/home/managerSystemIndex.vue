@@ -10,9 +10,7 @@
         </Sider>
         <Layout :style="{ padding: '0 24px 24px' }">
           <Breadcrumb :style="{ margin: '24px 0' }">
-            <BreadcrumbItem>Home</BreadcrumbItem>
-            <BreadcrumbItem>Components</BreadcrumbItem>
-            <BreadcrumbItem>Layout</BreadcrumbItem>
+            <BreadcrumbItem :to="path(index)" v-for="(item, index) in $route.meta.name" :key="index">{{item}}</BreadcrumbItem>
           </Breadcrumb>
           <Content
             :style="{ minHeight: '280px' }"
@@ -39,7 +37,15 @@ export default {
     asideNav: asideNav,
   },
   methods: {},
+  computed:{
+    path(){
+      return function(index) {
+        return this.$route.meta.path[index]
+      }
+    }
+  },
   mounted() {
+    console.log(this.$route.matched)
     this.$store.commit("getVuethis", this);
   },
 };
