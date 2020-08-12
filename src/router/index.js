@@ -83,6 +83,18 @@ const routes = [
         },
       },
       {
+        path: "userCenter",
+        name: "userCenter",
+        component: () => import ('@/views/manager/userCenter'),
+        meta: {
+          checkLogined: true,
+          title: 'userCenter',
+          name:['首页','用户管理'],
+          path:['/Managerindex/index','/Managerindex/userCenter'],
+          allowBack: true
+        },
+      },
+      {
         path: "",
         redirect: "index",
       },

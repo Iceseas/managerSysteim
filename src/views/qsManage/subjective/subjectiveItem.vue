@@ -88,7 +88,6 @@
 
 <script>
     import markSubjective from './common/markSubjective'
-	import showsubjectiveFrom from "./common/showSubjective_problem.vue";
 	export default {
 		data() {
 			return {
@@ -111,7 +110,6 @@
 			};
 		},
 		components: {
-			showsubjectiveFrom: showsubjectiveFrom,
 			markSubjective
 		},
 		mounted() {

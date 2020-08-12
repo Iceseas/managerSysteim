@@ -47,10 +47,6 @@ import "quill/dist/quill.bubble.css";
 
 export default {
   props: {
-    /*编辑器的内容*/
-    value: {
-      type: String,
-    },
     /*图片大小*/
     maxSize: {
       type: Number,
@@ -61,10 +57,9 @@ export default {
   components: {
     quillEditor,
   },
-
   data() {
     return {
-      content: this.value,
+      content: '',
       quillUpdateImg: false, // 根据图片上传状态来确定是否显示loading动画，刚开始是false,不显示
       editorOption: {
         placeholder: "",
@@ -103,6 +98,9 @@ export default {
   },
 
   methods: {
+    init(data) {
+      this.content = data;
+    },
     onEditorBlur() {
       //失去焦点事件
     },

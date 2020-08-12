@@ -32,7 +32,7 @@
           <Icon type="md-heart" />
           权限管理
         </MenuItem>
-        <MenuItem name="7">
+        <MenuItem name="userCenter" to="/Managerindex/userCenter">
           <Icon type="md-leaf" />
           用户管理
         </MenuItem>

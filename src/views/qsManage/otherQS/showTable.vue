@@ -47,7 +47,7 @@
     </div>
     <div class="Icontainer">
       <div class="IcontainerTopRow">
-        <div class="IcontainerTopTitle">查询列表</div>
+        <div class="IcontainerTopTitle">数据列表</div>
         <div class="IcontainerTopBtns">
           <el-button type="primary" @click="freshTableData()"
             >刷新数据</el-button
@@ -100,19 +100,14 @@
       </el-table>
     </div>
     <el-row class="showquestions_serch_add">
-      <el-col :span="24">
-        <div class="grid-content bg-purple">
-          <el-pagination
-            @current-change="handleCurrentChange"
-            :current-page="query.pageCurrent"
-            :page-size="query.pageSize"
-            layout="total, prev, pager, next, jumper"
-            :total="this.$store.state.total"
-          >
-          </el-pagination>
-        </div>
-      </el-col>
-    </el-row>
+			<el-col :span="24">
+				<div style="text-align:center" class="grid-content bg-purple">
+					<el-pagination @current-change="handleCurrentChange" :current-page="currentPage4" :page-size="10" layout="total, prev, pager, next, jumper"
+					 :total="this.$store.state.total">
+					</el-pagination>
+				</div>
+			</el-col>
+		</el-row>
     <singleQsForm ref="singleQsForm" @callBack="handleQsCallBack" />
     <decideQsForm ref="decideQsForm" @callBack="handleQsCallBack" />
     <vacancyQsForm ref="vacancyQsForm" @callBack="handleQsCallBack" />
