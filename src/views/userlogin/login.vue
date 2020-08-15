@@ -59,6 +59,7 @@
 <script>
 import { localStorageSetData } from '@/util/localStorageData'
 import { setCookie } from '@/util/cookie'
+import {UserApi} from '@/api/api'
 import axios from "axios";
 export default {
   data() {
@@ -92,15 +93,10 @@ export default {
     handleLogin() {
       let that = this;
       this.$Spin.show()
-      axios({
-        url: "http://localhost:3000/ManagerCount/api/checkLogin",
-        method: "POST",
-        data: {
-          discount: this.discount,
-          password: this.password,
-        },
-      })
-        .then((res) => {
+      UserApi.login({
+        discount: this.discount,
+        password: this.password,
+      }) .then((res) => {
           if (res.data.err == 0) {
             localStorageSetData('nowLoginUserCount', that.discount)
             localStorageSetData('nowLoginUserName', res.data.data[0].userName)

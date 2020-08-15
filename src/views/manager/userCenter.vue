@@ -64,7 +64,7 @@
           <Avatar v-else icon="ios-person" />
         </template>
         <template slot-scope="{ row }" slot="gender">
-          <Tag v-if="row.gender===1" size="large" color="geekblue">男</Tag>
+          <Tag v-if="row.gender==='1'" size="large" color="geekblue">男</Tag>
           <Tag v-else size="large" color="magenta">女</Tag>
         </template>
         <template slot-scope="{ row, index }" slot="userRole">
@@ -82,7 +82,14 @@
         </template>
       </Table>
     </div>
-    <Page :total="40" show-elevator show-sizer />
+    <Page :total="table.total" 
+     :current="table.page" 
+     :page-size="table.pageSize" 
+     show-total 
+     show-elevator 
+     show-sizer
+     @on-change="pageChange"
+     @on-page-size-change ="pageSizeChange" />
     <openUserFrom ref="openUserFrom" @callBack="handleAddNewUser" />
   </div>
 </template>
@@ -90,6 +97,7 @@
 <script>
 import axios from 'axios';
 import openUserFrom from './userCenter/userFrom'
+import { managerApi } from '@/api/api'
 export default {
   components:{ openUserFrom },
   data() {
@@ -103,6 +111,9 @@ export default {
         rules: {},
       },
       table: {
+        total: 0,
+        pageSize: 20,
+        page: 1,
         height: "560",
         columns: [
           {
@@ -195,13 +206,11 @@ export default {
     // 添加人员
     addNewUserAjax(data) {
       this.$Spin.show()
-      axios({
-        url: "http://localhost:3000/ManagerCount/api/addNewUser",
-        method: "POST",
-        data: {
-          data: data
-        },
-      }).then(res=>{
+      managerApi
+      .addUser({
+        data
+      })
+      .then(res=>{
         this.getList()
         this.$Spin.hide()
         this.Message('success', res.data.msg)
@@ -211,14 +220,27 @@ export default {
         this.Message('error', err.data.msg)
       })
     },
+    // pageSize改变
+    pageSizeChange(value){
+      this.table.pageSize = value;
+      this.getList();
+    },
+    // page改变
+    pageChange(value){
+      this.table.page = value;
+      this.getList();
+    },
     // 查询列表数据
     getList() {
       this.$Spin.show()
-      axios({
-        url: "http://localhost:3000/ManagerCount/api/getUserList",
-        method: "GET",
-      }).then(res=>{
-        this.table.tableData = res.data.data;
+      managerApi
+      .getList({
+        pageSize: this.table.pageSize,
+        page: this.table.page
+      })
+      .then(res=>{
+        this.table.tableData = res.data.info.list;
+        this.table.total = res.data.info.count;
         this.$Spin.hide()
       }).catch(err=>{
         this.$Spin.hide()

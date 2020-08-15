@@ -35,11 +35,11 @@
           <Col :span="12">
             <FormItem label="性别" prop="gender">
               <Select v-model="FormData.data.gender">
-                <Option value=1 label="男性">
+                <Option value="1" label="男性">
                   <span>男性</span>
                   <span style="float:right;color:#ccc">male</span>
                 </Option>
-                <Option value=0 label="女性">
+                <Option value="0" label="女性">
                   <span>女性</span>
                   <span style="float:right;color:#ccc">female</span>
                 </Option>
@@ -126,7 +126,7 @@ export default {
           discount: "",
           password: "",
           telephone: "",
-          gender: 0,
+          gender: "0",
           userRole: "1",
           userGrade: "",
           userClass: "",
@@ -134,6 +134,7 @@ export default {
           status: "1",
           stuID: "",
           major: "",
+          isOnline:"false"
         },
       },
     };

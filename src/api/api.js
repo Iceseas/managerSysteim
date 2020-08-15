@@ -1,6 +1,10 @@
 import {get, post, formData, baseURL } from './http'
-export const subjectiveAPI = {
-    getlist: params => post('/getQuestion/api/getlist', params), //登录接口
-    deleteData: params => post('updatelist', params), //登出接口
-    updateData: params => post('DeleteQuestionData', params), //登出接口
+export const UserApi = {
+    login: params => post('ManagerCount/api/checkLogin', params), //登录接口
+    logOut: params => post('ManagerCount/api/logOut', params), //登出接口
+}
+
+export const managerApi = {
+    addUser: params => post('ManagerCount/api/addNewUser', params), //添加用户接口
+    getList: params => post('ManagerCount/api/getUserList', params), //用户列表查询接口
 }

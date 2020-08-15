@@ -4,7 +4,7 @@
     <div class="headernav_menu">
       <ul class="headernav_ShowUserMsg_ul">
         <li class="headernav_ShowUserMsg_li">
-          欢迎您:{{ welcomeManager }} 老师
+          欢迎您:{{ welcomeManager }} 
         </li>
         <li class="headernav_ShowUserMsg_li">
           <Button
@@ -39,7 +39,6 @@
           size="large"
         />
         <p>{{ welcomeManager }}</p>
-        <p>老师</p>
       </div>
       <div slot="footer">
         <Button type="primary" size="large" long @click="closeShowUser"
@@ -55,7 +54,7 @@ import {
   localStorageGetData,
   localStorageRemoveData,
 } from "@/util/localStorageData";
-import axios from 'axios'
+import {UserApi} from '@/api/api'
 import { removeCookie } from "@/util/cookie";
 export default {
   data() {
@@ -78,15 +77,10 @@ export default {
         content: "<p>确定要退出吗</p>",
         onOk: () => {
           this.$Spin.show();
-          axios({
-            url: "http://localhost:3000/ManagerCount/api/logOut",
-            method: "POST",
-            data: {
-              discount: this.nowOnlineManager,
-            },
+          UserApi.logOut({
+            discount: this.nowOnlineManager,
           })
             .then((res) => {
-              console.log(res)
               if (res.data.err == 0) {
                 localStorageRemoveData("nowLoginUserCount");
                 localStorageRemoveData("nowLoginUserName");
@@ -103,7 +97,6 @@ export default {
               }
             })
             .catch((err) => {
-              console.log(res)
               localStorageRemoveData("nowLoginUserCount");
               localStorageRemoveData("nowLoginUserName");
               removeCookie("token");
