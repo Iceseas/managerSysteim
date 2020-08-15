@@ -59,7 +59,7 @@ export default {
 .layout {
   background: #f5f7f9;
   position: relative;
-  overflow: hidden;
+  overflow: auto;
 }
 .layout-logo {
   width: 100px;

@@ -4,8 +4,8 @@
       <div class="IcontainerTopRow">
         <div class="IcontainerTopTitle">查询列表</div>
         <div class="IcontainerTopBtns">
-          <el-button type="primary">查询</el-button>
-          <el-button type="primary">重置</el-button>
+          <Button class="marginR10" type="primary">查询</Button>
+          <Button type="primary">重置</Button>
         </div>
       </div>
       <div class="searchFormBody">
@@ -49,7 +49,7 @@
       <div class="IcontainerTopRow">
         <div class="IcontainerTopTitle">数据列表</div>
         <div class="IcontainerTopBtns">
-          <el-button type="primary" @click="openUserFrom">添加用户</el-button>
+          <Button type="primary" @click="openUserFrom">添加用户</Button>
         </div>
       </div>
       <Table
@@ -114,7 +114,7 @@ export default {
         total: 0,
         pageSize: 20,
         page: 1,
-        height: "560",
+        height: "545",
         columns: [
           {
             title:'序号',
@@ -271,8 +271,5 @@ export default {
 };
 </script>
 
-<style>
-.marginR10{
-  margin-right: 10px;
-}
+<style scoped>
 </style>

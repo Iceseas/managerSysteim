@@ -15,12 +15,6 @@
         <FormItem label="选项二" prop="Item2">
           <Input :disabled="isDisabled" style="width:95%" v-model="FormData.data.Item2" placeholder="请输入选项2内容"></Input>
         </FormItem>
-        <FormItem label="选项三" prop="Item3">
-          <Input :disabled="true" style="width:95%" v-model="FormData.data.Item3" placeholder="请输入选项3内容"></Input>
-        </FormItem>
-        <FormItem label="选项四" prop="Item4">
-          <Input :disabled="true" style="width:95%" v-model="FormData.data.Item4" placeholder="请输入选项4内容"></Input>
-        </FormItem>
         <FormItem label="答案" prop="Answer">
           <Select :disabled="isDisabled" v-model="FormData.data.Answer" placeholder="请选择" style="width:95%">
             <Option value="A">A</Option>
@@ -77,8 +71,6 @@ export default {
           Question: "",
           Item1: "",
           Item2: "",
-          Item3: "",
-          Item4: "",
           Answer: "",
           KN: "",
           Chapter: "",

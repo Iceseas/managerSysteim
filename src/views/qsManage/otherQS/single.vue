@@ -4,138 +4,176 @@
       <div class="IcontainerTopRow">
         <div class="IcontainerTopTitle">查询列表</div>
         <div class="IcontainerTopBtns">
-          <el-button type="primary">查询</el-button>
-          <el-button type="primary">重置</el-button>
+          <Button class="marginR10" type="primary">查询</Button>
+          <Button type="primary">重置</Button>
         </div>
       </div>
       <div class="searchFormBody">
-        <el-form>
-          <el-row>
-            <el-col :span="8">
-              <el-form-item label="章节：" label-width="110px">
-                <el-select
-                  v-model="query.chapter"
-                  filterable
-                  placeholder="请选择"
-                >
-                  <el-option
+        <Form
+          :label-colon="true"
+          :model="FormData.data"
+          ref="formList"
+          :rules="FormData.rules"
+          :label-width="100"
+        >
+          <Row>
+            <Col :span="8">
+              <FormItem label="章节：">
+                <Select v-model="FormData.data.chapter" filterable placeholder="请选择">
+                  <Option
                     v-for="item in chapterList"
                     :key="item.value"
                     :label="item.label"
                     :value="item.value"
-                  >
-                  </el-option>
-                </el-select>
-              </el-form-item>
-            </el-col>
-            <el-col :span="8">
-              <el-form-item label="难度：" label-width="110px">
-                <el-select
-                  v-model="query.difficulty"
-                  filterable
-                  placeholder="请选择"
-                >
-                  <el-option key="1" label="简单" value="1"></el-option>
-                  <el-option key="2" label="较难" value="2"></el-option>
-                  <el-option key="3" label="困难" value="3"></el-option>
-                </el-select>
-              </el-form-item>
-            </el-col>
-          </el-row>
-        </el-form>
+                  ></Option>
+                </Select>
+              </FormItem>
+            </Col>
+            <Col :span="8">
+              <FormItem label="难度：">
+                <Select v-model="FormData.data.difficulty" filterable placeholder="请选择">
+                  <Option key="1" label="简单" value="1"></Option>
+                  <Option key="2" label="较难" value="2"></Option>
+                  <Option key="3" label="困难" value="3"></Option>
+                </Select>
+              </FormItem>
+            </Col>
+          </Row>
+        </Form>
       </div>
     </div>
     <div class="Icontainer">
       <div class="IcontainerTopRow">
-        <div class="IcontainerTopTitle">查询列表</div>
+        <div class="IcontainerTopTitle">数据列表</div>
         <div class="IcontainerTopBtns">
-          <el-button type="primary" @click="getDataList()"
-            >刷新数据</el-button
-          >
-          <el-button type="primary" @click="addNewQuestion()"
-            >添加选择题</el-button
-          >
+          <Button type="primary" @click="addNewQuestion()">添加</Button>
         </div>
       </div>
-      <!-- <el-table
-        fit
-        border
-        :data="this.$store.state.tableData"
-        row-key="index"
-        :height="tableHeight"
-        stripe
-        style="width: 100%"
-        v-loading="this.$store.state.loading"
-      >
-        <el-table-column
-          align="center"
-          :key="col.prop"
-          :label="col.label"
-          :prop="col.prop"
-          v-for="col in this.$store.state.cols"
-          show-overflow-tooltip
-        >
-        </el-table-column>
-        <el-table-column align="center" label="操作" width="150">
-          <template slot-scope="scope">
-            <el-button
-              type="primary"
-              size="mini"
-              @click="handleEdit(scope.$index, scope.row)"
-              >编辑</el-button
-            >
-            <el-button
-              size="mini"
-              type="danger"
-              @click="handleDelete(scope.$index, scope.row)"
-              >删除</el-button
-            >
-          </template>
-        </el-table-column>
-      </el-table> -->
-      <Table border ref="table" :height="table.height" :columns="table.columns" :data="table.data">
+      <Table :height="table.height" stripe border :columns="table.columns" :data="table.tableData">
+        <template slot-scope="{ row, index }" slot="difficulty">
+          <Tag v-if="row.difficulty==='简单'" size="large" color="green">简单</Tag>
+          <Tag v-else-if="row.difficulty==='较难'" size="large" color="gold">较难</Tag>
+          <Tag v-else size="large" color="red">困难</Tag>
+        </template>
         <template slot-scope="{ row, index }" slot="action">
-          <Button
-            type="primary"
-            size="small"
-            style="margin-right: 5px"
-            @click="handleEdit(index, row)">编辑</Button>
-          <Button
-            type="error"
-            size="small"
-            @click="handleDelete(index, row)">删除</Button>
+          <Button class="marginR10" type="info">查看</Button>
+          <Button class="marginR10" type="success">编辑</Button>
+          <Button type="error">删除</Button>
         </template>
       </Table>
     </div>
-    <Row class="showquestions_serch_add">
-      <Col :span="24">
-        <Page :total="this.$store.state.total" show-total :page-size="query.pageSize" @on-change="handleCurrentChange" />
-      </Col>
-    </Row>
+    <Page
+      :total="table.total"
+      :current="table.page"
+      :page-size="table.pageSize"
+      show-total
+      show-elevator
+      show-sizer
+      @on-change="pageChange"
+      @on-page-size-change="pageSizeChange"
+    />
     <singleQsForm ref="singleQsForm" @callBack="handleQsCallBack" />
   </div>
 </template>
 
 <script>
 import singleQsForm from "./single/singleQsForm";
-import axios from 'axios'
-import Axios from 'axios';
+import { questionApi } from "@/api/api";
 export default {
   data() {
     return {
       // 查询条件
-      query: {
-        difficulty: "",
-        chapter: "",
-        pageSize: 10,
-        pageCurrent: 1,
+      FormData: {
+        data: {
+          chapter: "",
+          difficulty: "",
+        },
+        rules: {},
       },
-      tableHeight: 0,
-      data: null,
-      currentPage4: 1,
-      loading: false,
-      // 现在的qsType
-      questionType: "",
+      table: {
+        total: 0,
+        pageSize: 20,
+        page: 1,
+        height: "545",
+        columns: [
+          {
+            title: "序号",
+            type: "index",
+            width: 80,
+            align: "center",
+          },
+          {
+            title: "问题",
+            align: "center",
+            tooltip: true,
+            key: "Question",
+          },
+          {
+            title: "选项1",
+            align: "center",
+            tooltip: true,
+            width:'100',
+            key: "Item1",
+          },
+          {
+            title: "选项2",
+            align: "center",
+            tooltip: true,
+            width:'100',
+            key: "Item2",
+          },
+          {
+            title: "选项3",
+            align: "center",
+            tooltip: true,
+            width:'100',
+            key: "Item3",
+          },
+          {
+            title: "选项4",
+            align: "center",
+            tooltip: true,
+            width:'100',
+            key: "Item4",
+          },
+          {
+            title: "知识点",
+            align: "center",
+            width:'200',
+            tooltip: true,
+            key: "KN",
+          },
+          {
+            title: "章节",
+            align: "center",
+            tooltip: true,
+            width:'100',
+            key: "Chapter",
+          },
+          {
+            title: "难度",
+            align: "center",
+            width:'100',
+            slot: "difficulty",
+            tooltip: true,
+            key: "difficulty",
+          },
+          {
+            title: "答案",
+            align: "center",
+            width:'100',
+            tooltip: true,
+            key: "Answer",
+          },
+          {
+            title: "操作",
+            slot: "action",
+            width: 280,
+            align: "center",
+          },
+        ],
+        tableData: [],
+      },
       // 章节
       chapterList: [
         {
@@ -194,139 +232,87 @@ export default {
           label: "第十一章",
         },
       ],
-      table: {
-        height: 575,
-        columns: [
-          {
-            type: "selection",
-            width: 60,
-            align: "center",
-          },
-          {
-            type: "index",
-            title: "序号",
-            width: 80,
-            align: "center",
-          },
-          {
-            title: "问题",
-            key: "Question",
-            align: "center",
-            tooltip: true,
-          },
-          {
-            title: "选项A",
-            key: "Item1",
-            align: "center",
-            tooltip: true,
-          },
-          {
-            title: "选项B",
-            key: "Item2",
-            align: "center",
-            tooltip: true,
-          },
-          {
-            title: "选项C",
-            key: "Item3",
-            align: "center",
-            tooltip: true,
-          },
-          {
-            title: "选项D",
-            key: "Item4",
-            align: "center",
-            tooltip: true,
-          },
-          {
-            title: "知识点",
-            key: "KN",
-            align: "center",
-            tooltip: true,
-          },
-          {
-            title: "章节",
-            key: "Chapter",
-            align: "center",
-            tooltip: true,
-          },
-          {
-            title: "难度",
-            key: "difficulty",
-            align: "center",
-            tooltip: true,
-          },
-          {
-            title: "操作",
-            slot: "action",
-            width: 180,
-            align: "center",
-          },
-        ],
-        data: [],
-      },
     };
   },
   mounted() {
-    window.onresize = () => {
-      this.$nextTick(() => {
-        this.tableHeight = document.body.clientHeight - 395 + "px";
-      });
-    };
-    this.$nextTick(() => {
-      this.tableHeight = document.body.clientHeight - 395 + "px";
-    });
-    this.questionType = window.localStorage.getItem("questionType");
-    this.getDataList();
+    this.getList();
   },
   methods: {
-    handleEdit(index, row) {
-      this.$refs.singleQsForm.init("update", row);
-    },
-    getDataList() {
-      this.$Spin.show()
-      axios({
-        url: "http://localhost:3000/getQuestion/api/getlist",
-        method: "POST",
-        data: {
-          questionNum: 10,
-          nowQuestionType: 'single_C1',
-        },
-      }).then(res=>{
-        for(let i = 0;i<res.data.result.data.length;i++) {
-          this.table.data.push(JSON.parse(res.data.result.data[i]))
-        }
-        this.$Spin.hide()
-      }).catch(err=>{
-        console.log(err)
-      })
-    },
-    handleDelete(index, row) {
-      this.$store.commit("changeNowDeleteDataId", row.Id);
-      this.$store.dispatch("Delete_listData_AJAX");
-    },
-    handleCurrentChange(val) {
-      this.$store.commit("changePageInfo", val);
-      this.$store.dispatch("get_PageInfo_AJAX");
-      this.$store.dispatch("get_listData_AJAX");
-    },
     addNewQuestion() {
       this.$refs.singleQsForm.init("add", {});
     },
-    // 处理添加的单选
     handleQsCallBack(obj, type) {
-      if (type === "add") {
-        this.$store.commit("getAddData", obj);
-        this.$store.dispatch("add_listData_AJAX");
-      } else if (type === "update") {
-        this.$store.commit("getUpdateData", obj);
-        this.$store.dispatch("update_listData_AJAX");
-      }
+      questionApi
+        .addSingleData({
+          Question: obj.Question,
+          Item1: obj.Item1,
+          Item2: obj.Item2,
+          Item3: obj.Item3,
+          Item4: obj.Item4,
+          KN: obj.KN,
+          Chapter: obj.Chapter,
+          difficulty: obj.difficulty,
+          Answer: obj.Answer,
+        })
+        .then((res) => {
+          this.$Spin.hide();
+          this.Message("success", res.data.msg);
+          this.getList();
+        })
+        .catch((err) => {
+          this.$Spin.hide();
+          this.Message("error", err.data.msg);
+          this.getList();
+        });
     },
-  },
-  beforeDestroy() {
-    this.$store.state.isFromShow = false;
-    this.$store.state.questionNum = 10;
+    // pageSize改变
+    pageSizeChange(value) {
+      this.table.pageSize = value;
+      this.getList();
+    },
+    // page改变
+    pageChange(value) {
+      this.table.page = value;
+      this.getList();
+    },
+    // 查询列表数据
+    getList() {
+      this.$Spin.show();
+      questionApi
+        .getSingleList({
+          pageSize: this.table.pageSize,
+          page: this.table.page,
+        })
+        .then((res) => {
+          this.table.tableData = res.data.info.list;
+          this.table.total = res.data.info.count;
+          this.$Spin.hide();
+        })
+        .catch((err) => {
+          this.$Spin.hide();
+          this.Message("error", err.data.msg);
+        });
+    },
+    // 封装消息提示
+    Message(type, content, duration, closable) {
+      let msDuration, msClosable;
+      if (duration === null || duration === undefined || duration === "") {
+        msDuration = 1.5;
+      } else {
+        msDuration = duration;
+      }
+      if (closable === null || closable === undefined || closable === "") {
+        msClosable = false;
+      } else {
+        msClosable = closable;
+      }
+      this.$Message.destroy();
+      this.$Message[type]({
+        content,
+        duration: msDuration,
+        closable: msClosable,
+      });
+    },
   },
   components: {
     singleQsForm,
@@ -335,7 +321,4 @@ export default {
 </script>
 
 <style scoped>
->>> .el-date-editor {
-  width: 100% !important;
-}
 </style>

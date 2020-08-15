@@ -118,6 +118,7 @@
 import singleQsForm from './single/singleQsForm'
 import decideQsForm from './decide/decideQsForm'
 import vacancyQsForm from './vacancy/vacancyQsFrom'
+import { questionApi } from '@/api/api'
 export default {
   data() {
     return {
@@ -270,12 +271,31 @@ export default {
     // 处理添加的单选
     handleQsCallBack(obj, type){
       if (type === 'add') {
-        this.$store.commit("getAddData", obj);
-        this.$store.dispatch("add_listData_AJAX");
+       
       } else if (type === 'update') {
         this.$store.commit("getUpdateData", obj);
         this.$store.dispatch("update_listData_AJAX");
       } 
+    },
+    // 封装消息提示
+    Message(type, content, duration, closable) {
+      let msDuration,msClosable;
+      if (duration === null || duration === undefined || duration === '') {
+        msDuration = 1.5
+      } else {
+        msDuration = duration
+      }
+      if (closable === null || closable === undefined || closable === '') {
+        msClosable = false
+      } else {
+        msClosable = closable
+      }
+      this.$Message.destroy()
+      this.$Message[type]({
+        content,
+        duration: msDuration,
+        closable: msClosable,
+      })
     }
   },
   beforeDestroy() {

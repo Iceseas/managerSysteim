@@ -47,27 +47,15 @@ const routes = [
         },
       },
       {
-        path: "showallquestion",
-        name: "showallquestion",
+        path: "question",
+        name: "question",
         component: () => import ('@/views/qsManage/otherQS/common/showallquestion'),
         meta: {
           checkLogined: true,
-          title: 'showallquestion',
-          name:['首页','其他题型'],
-          path:['/Managerindex/index','/Managerindex/showallquestion'],
-          allowBack: true
-        },
-      },
-      {
-        path: "showTable",
-        name: "showTable",
-        component: () => import ('@/views/qsManage/otherQS/showTable'),
-        meta: {
-          checkLogined: true,
-          title: 'showTable',
-          name:['首页','其他题型','列表'],
-          path:['/Managerindex/index','/Managerindex/showallquestion','/Managerindex/showTable'],
-          allowBack: true
+          title: 'question',
+          name:['首页','题库管理'],
+          path:['/Managerindex/index','/Managerindex/question'],
+          allowBack: true,
         },
       },
       {
@@ -77,8 +65,44 @@ const routes = [
         meta: {
           checkLogined: true,
           title: 'subjectiveItem',
-          name:['首页','主观题'],
-          path:['/Managerindex/index','/Managerindex/subjectiveItem'],
+          name:['首页','题库管理','主观题'],
+          path:['/Managerindex/index','/Managerindex/question','/Managerindex/subjectiveItem'],
+          allowBack: true
+        },
+      },
+      {
+        path: "decide",
+        name: "decide",
+        component: () => import ('@/views/qsManage/otherQS/decide'),
+        meta: {
+          checkLogined: true,
+          title: 'decide',
+          name:['首页','题库管理','判断题'],
+          path:['/Managerindex/index','/Managerindex/question','/Managerindex/decide'],
+          allowBack: true
+        },
+      },
+      {
+        path: "single",
+        name: "single",
+        component: () => import ('@/views/qsManage/otherQS/single'),
+        meta: {
+          checkLogined: true,
+          title: 'single',
+          name:['首页','题库管理','单选题'],
+          path:['/Managerindex/index','/Managerindex/question','/Managerindex/single'],
+          allowBack: true
+        },
+      },
+      {
+        path: "vacancy",
+        name: "vacancy",
+        component: () => import ('@/views/qsManage/otherQS/vacancy'),
+        meta: {
+          checkLogined: true,
+          title: 'vacancy',
+          name:['首页','题库管理','填空题'],
+          path:['/Managerindex/index','/Managerindex/question','/Managerindex/vacancy'],
           allowBack: true
         },
       },

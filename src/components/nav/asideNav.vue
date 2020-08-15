@@ -8,13 +8,25 @@
         </MenuItem>
       </MenuGroup>
       <MenuGroup title="题库管理">
+        <MenuItem name="question" to="/Managerindex/question">
+          <Icon type="md-leaf" />
+            首页
+        </MenuItem>
         <MenuItem name="subjectiveItem" to="/Managerindex/subjectiveItem">
           <Icon type="md-heart" />
             主观题
         </MenuItem>
-        <MenuItem name="showallquestion" to="/Managerindex/showallquestion">
-          <Icon type="md-leaf" />
-            其他题型
+        <MenuItem name="decide" to="/Managerindex/decide">
+          <Icon type="md-heart" />
+            判断题
+        </MenuItem>
+        <MenuItem name="single" to="/Managerindex/single">
+          <Icon type="md-heart" />
+            单选
+        </MenuItem>
+        <MenuItem name="vacancy" to="/Managerindex/vacancy">
+          <Icon type="md-heart" />
+            填空
         </MenuItem>
       </MenuGroup>
       <MenuGroup title="系统设置">
@@ -51,6 +63,11 @@ export default {
     return {
       activeName: ''
     };
+  },
+  watch:{
+    "$route.name":function(value, oldvalue) {
+      this.activeName = this.$route.name
+    }
   },
   mounted() {
     this.activeName = this.$route.name
