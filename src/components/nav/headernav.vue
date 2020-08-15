@@ -77,41 +77,38 @@ export default {
         title: "退出",
         content: "<p>确定要退出吗</p>",
         onOk: () => {
-          this.$router.replace("/login");
           this.$Spin.show();
           axios({
             url: "http://localhost:3000/ManagerCount/api/logOut",
             method: "POST",
             data: {
-              managerCount: this.nowOnlineManager,
+              discount: this.nowOnlineManager,
             },
           })
             .then((res) => {
-              if (res.data.error == 0) {
+              console.log(res)
+              if (res.data.err == 0) {
                 localStorageRemoveData("nowLoginUserCount");
                 localStorageRemoveData("nowLoginUserName");
                 removeCookie("token");
                 this.$Spin.hide();
-                this.$Message.destroy();
-                this.$Message.success(res.data.msg);
+                this.Message('success', res.data.msg)
                 this.$router.replace("/login");
               } else {
                 localStorageRemoveData("nowLoginUserCount");
                 localStorageRemoveData("nowLoginUserName");
+                removeCookie("token");
                 this.$Spin.hide();
-                this.$Message.destroy();
-                this.$Message.error(res.data.msg);
-                this.$router.replace("/login");
+                this.Message('error', res.data.msg)
               }
             })
             .catch((err) => {
+              console.log(res)
               localStorageRemoveData("nowLoginUserCount");
               localStorageRemoveData("nowLoginUserName");
               removeCookie("token");
               this.$Spin.hide();
-              this.$Message.destroy();
-              this.$Message.error(err.msg);
-              this.$router.replace("/login");
+              this.Message('error', err.data.msg)
             });
            // 禁用后退
           history.pushState(null, null, document.URL);
@@ -129,6 +126,26 @@ export default {
     closeShowUser() {
       this.showUserMsgModal = false;
     },
+    // 封装消息提示
+    Message(type, content, duration, closable) {
+      let msDuration,msClosable;
+      if (duration === null || duration === undefined || duration === '') {
+        msDuration = 1.5
+      } else {
+        msDuration = duration
+      }
+      if (closable === null || closable === undefined || closable === '') {
+        msClosable = false
+      } else {
+        msClosable = closable
+      }
+      this.$Message.destroy()
+      this.$Message[type]({
+        content,
+        duration: msDuration,
+        closable: msClosable,
+      })
+    }
   },
 };
 </script>

@@ -18,22 +18,9 @@
               <input
                 class="login_username_input"
                 id="login_username"
-                v-model="managerCount"
+                v-model="discount"
                 type="text"
                 placeholder="请输入您的用户名"
-              />
-            </div>
-            <label class="login_username_lable" for="login_TeacherID"
-              >TeacherID:</label
-            >
-            <div class="login_username">
-              <i class="el-icon-suitcase-1"></i>
-              <input
-                class="login_username_input"
-                id="login_TeacherID"
-                v-model="TeacherID"
-                type="text"
-                placeholder="请输入您的教师工号"
               />
             </div>
             <label class="login_username_lable" for="login_password"
@@ -44,7 +31,7 @@
               <input
                 class="login_username_input"
                 id="login_password"
-                v-model="managerpassword"
+                v-model="password"
                 type="password"
                 autocomplete="off"
                 placeholder="请输入您的密码"
@@ -70,8 +57,8 @@
 </template>
 
 <script>
-import { localStorageSetData } from '../../util/localStorageData'
-import { setCookie } from '../../util/cookie'
+import { localStorageSetData } from '@/util/localStorageData'
+import { setCookie } from '@/util/cookie'
 import axios from "axios";
 export default {
   data() {
@@ -80,14 +67,14 @@ export default {
       isshowlogin: false,
       isshowreg: false,
       radio: "0",
-      TeacherID: "",
-      managerCount: "",
-      managerpassword: "",
+      discount: "",
+      password: "",
+      token:null,
     };
   },
   mounted(){
     window.history.pushState('forward', null, '#'); //在IE中必须得有这两行
-          window.history.forward(1);
+    window.history.forward(1);
   },
   methods: {
     handleShowLogin() {
@@ -109,34 +96,51 @@ export default {
         url: "http://localhost:3000/ManagerCount/api/checkLogin",
         method: "POST",
         data: {
-          TeacherID: this.TeacherID,
-          managerCount: this.managerCount,
-          managerpassword: this.managerpassword,
+          discount: this.discount,
+          password: this.password,
         },
       })
         .then((res) => {
-          if (res.data.error == 0) {
-            localStorageSetData('nowLoginUserCount', that.managerCount)
-            localStorageSetData('nowLoginUserName', res.data.userName)
-            setCookie('token', that.managerCount)
+          if (res.data.err == 0) {
+            localStorageSetData('nowLoginUserCount', that.discount)
+            localStorageSetData('nowLoginUserName', res.data.data[0].userName)
+            setCookie('token', that.discount)
             this.$Spin.hide()
-            this.$Message.destroy()
-            this.$Message.success(res.data.msg)
+            this.Message('success', res.data.msg)
             this.$router.push({
               path: '/Managerindex/index'
             });
           } else {
             this.$Spin.hide()
-            this.$Message.destroy()
-            this.$Message.error(res.data.msg)
+            this.Message('error', res.data.msg)
           }
         })
         .catch((err) => {
+          console.log(err)
           this.$Spin.hide()
-          this.$Message.destroy()
-          this.$Message.error(err.msg)
+          this.Message('error', err.data.msg)
         });
     },
+    // 封装消息提示
+    Message(type, content, duration, closable) {
+      let msDuration,msClosable;
+      if (duration === null || duration === undefined || duration === '') {
+        msDuration = 1.5
+      } else {
+        msDuration = duration
+      }
+      if (closable === null || closable === undefined || closable === '') {
+        msClosable = false
+      } else {
+        msClosable = closable
+      }
+      this.$Message.destroy()
+      this.$Message[type]({
+        content,
+        duration: msDuration,
+        closable: msClosable,
+      })
+    }
   },
 };
 </script>

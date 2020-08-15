@@ -49,7 +49,7 @@
       <div class="IcontainerTopRow">
         <div class="IcontainerTopTitle">数据列表</div>
         <div class="IcontainerTopBtns">
-          <el-button type="primary">添加用户</el-button>
+          <el-button type="primary" @click="openUserFrom">添加用户</el-button>
         </div>
       </div>
       <Table
@@ -60,34 +60,43 @@
         :data="table.tableData"
       >
         <template slot-scope="{ row }" slot="userimg">
-          <Avatar :src="row.userimg" />
+          <Avatar v-if="row.userimg.length>1" :src="row.userimg" />
+          <Avatar v-else icon="ios-person" />
         </template>
         <template slot-scope="{ row }" slot="gender">
-          <Tag v-if="row.gender==='男'" size="large" color="geekblue">男</Tag>
+          <Tag v-if="row.gender===1" size="large" color="geekblue">男</Tag>
           <Tag v-else size="large" color="magenta">女</Tag>
+        </template>
+        <template slot-scope="{ row, index }" slot="userRole">
+          <Tag v-if="row.userRole==='1'" color="cyan"  size="large">老师</Tag>
+          <Tag v-else color="purple"  size="large">学生</Tag>
         </template>
         <template slot-scope="{ row }" slot="status">
           <Tag v-if="row.status==='1'" color="green"  size="large">启用</Tag>
           <Tag v-else color="red"  size="large">禁用</Tag>
         </template>
         <template slot-scope="{ row, index }" slot="action">
-          <Button class="marginR10" type="info" >编辑</Button>
+          <Button class="marginR10" type="info" @click="editFn(row)">编辑</Button>
           <Button class="marginR10" type="error" >禁用</Button>
           <Button type="success" >密码重置</Button>
         </template>
       </Table>
     </div>
     <Page :total="40" show-elevator show-sizer />
+    <openUserFrom ref="openUserFrom" @callBack="handleAddNewUser" />
   </div>
 </template>
 
 <script>
+import axios from 'axios';
+import openUserFrom from './userCenter/userFrom'
 export default {
+  components:{ openUserFrom },
   data() {
     return {
       FormData: {
         data: {
-          userCountName: "",
+          discount: "",
           userName: "",
           gender:''
         },
@@ -140,6 +149,7 @@ export default {
             title: "角色",
             align: "center",
             tooltip: true,
+            slot:'userRole',
             key: "userRole",
           },
           {
@@ -162,33 +172,80 @@ export default {
             align: "center",
           },
         ],
-        tableData: [
-          {
-            discount:'iceseasyh',
-            userimg:'https://i.loli.net/2017/08/21/599a521472424.jpg',
-            userName:'icesea',
-            gender:'男',
-            userGrade:'16-软件工程',
-            userClass:'3班',
-            userRole:'老师',
-            telephone:'',
-            status:'1'
-          },
-          {
-            discount:'icesea',
-            userimg:'https://ss2.bdstatic.com/70cFvnSh_Q1YnxGkpoWK1HF6hhy/it/u=2076373339,2173673275&fm=26&gp=0.jpg',
-            userName:'ice',
-            gender:'女',
-            userGrade:'16-软件工程',
-            userClass:'3班',
-            userRole:'老师',
-            telephone:'',
-            status:'1'
-          }
-        ],
+        tableData: [],
       },
     };
   },
+  mounted() {
+    this.getList();
+  },
+  methods:{
+    openUserFrom() {
+      this.$refs.openUserFrom.init('add', '')
+    },
+    handleAddNewUser(data, type) {
+      if(type === 'add') {
+        this.addNewUserAjax(data)
+      }
+    },
+    // 编辑人员
+    editFn(row) {
+      this.$refs.openUserFrom.init('edit', row)
+    },
+    // 添加人员
+    addNewUserAjax(data) {
+      this.$Spin.show()
+      axios({
+        url: "http://localhost:3000/ManagerCount/api/addNewUser",
+        method: "POST",
+        data: {
+          data: data
+        },
+      }).then(res=>{
+        this.getList()
+        this.$Spin.hide()
+        this.Message('success', res.data.msg)
+      }).catch(err=>{
+        this.getList()
+        this.$Spin.hide()
+        this.Message('error', err.data.msg)
+      })
+    },
+    // 查询列表数据
+    getList() {
+      this.$Spin.show()
+      axios({
+        url: "http://localhost:3000/ManagerCount/api/getUserList",
+        method: "GET",
+      }).then(res=>{
+        this.table.tableData = res.data.data;
+        this.$Spin.hide()
+      }).catch(err=>{
+        this.$Spin.hide()
+        this.Message('error', err.data.msg)
+      })
+    },
+    // 封装消息提示
+    Message(type, content, duration, closable) {
+      let msDuration,msClosable;
+      if (duration === null || duration === undefined || duration === '') {
+        msDuration = 1.5
+      } else {
+        msDuration = duration
+      }
+      if (closable === null || closable === undefined || closable === '') {
+        msClosable = false
+      } else {
+        msClosable = closable
+      }
+      this.$Message.destroy()
+      this.$Message[type]({
+        content,
+        duration: msDuration,
+        closable: msClosable,
+      })
+    }
+  }
 };
 </script>
 
