@@ -56,6 +56,7 @@
         :height="table.height"
         stripe
         border
+        :loadin="table.loading"
         :columns="table.columns"
         :data="table.tableData"
       >
@@ -114,6 +115,7 @@ export default {
         total: 0,
         pageSize: 20,
         page: 1,
+        loading: false,
         height: "545",
         columns: [
           {
@@ -205,19 +207,19 @@ export default {
     },
     // 添加人员
     addNewUserAjax(data) {
-      this.$Spin.show()
+      this.table.loading = true;
       managerApi
       .addUser({
         data
       })
       .then(res=>{
         this.getList()
-        this.$Spin.hide()
         this.Message('success', res.data.msg)
+        this.table.loading = false;
       }).catch(err=>{
         this.getList()
-        this.$Spin.hide()
         this.Message('error', err.data.msg)
+        this.table.loading = false;
       })
     },
     // pageSize改变
@@ -232,7 +234,7 @@ export default {
     },
     // 查询列表数据
     getList() {
-      this.$Spin.show()
+      this.table.loading = true;
       managerApi
       .getList({
         pageSize: this.table.pageSize,
@@ -241,10 +243,10 @@ export default {
       .then(res=>{
         this.table.tableData = res.data.info.list;
         this.table.total = res.data.info.count;
-        this.$Spin.hide()
+        this.table.loading = false;
       }).catch(err=>{
-        this.$Spin.hide()
         this.Message('error', err.data.msg)
+        this.table.loading = false;
       })
     },
     // 封装消息提示

@@ -49,7 +49,7 @@
           <Button type="primary" @click="addNewQuestion()">添加</Button>
         </div>
       </div>
-      <Table :height="table.height" stripe border :columns="table.columns" :data="table.tableData">
+      <Table :height="table.height" stripe border :columns="table.columns" :loading="table.loading" :data="table.tableData">
         <template slot-scope="{ row, index }" slot="difficulty">
           <Tag v-if="row.difficulty==='简单'" size="large" color="green">简单</Tag>
           <Tag v-else-if="row.difficulty==='较难'" size="large" color="gold">较难</Tag>
@@ -93,6 +93,7 @@ export default {
       table: {
         total: 0,
         pageSize: 20,
+        loading:false,
         page: 1,
         height: "545",
         columns: [
@@ -242,6 +243,7 @@ export default {
       this.$refs.singleQsForm.init("add", {});
     },
     handleQsCallBack(obj, type) {
+      this.table.loading = true;
       questionApi
         .addSingleData({
           Question: obj.Question,
@@ -255,14 +257,14 @@ export default {
           Answer: obj.Answer,
         })
         .then((res) => {
-          this.$Spin.hide();
           this.Message("success", res.data.msg);
           this.getList();
+          this.table.loading = false;
         })
         .catch((err) => {
-          this.$Spin.hide();
           this.Message("error", err.data.msg);
           this.getList();
+          this.table.loading = false;
         });
     },
     // pageSize改变
@@ -277,7 +279,7 @@ export default {
     },
     // 查询列表数据
     getList() {
-      this.$Spin.show();
+      this.table.loading = true;
       questionApi
         .getSingleList({
           pageSize: this.table.pageSize,
@@ -286,11 +288,11 @@ export default {
         .then((res) => {
           this.table.tableData = res.data.info.list;
           this.table.total = res.data.info.count;
-          this.$Spin.hide();
+         this.table.loading = false;
         })
         .catch((err) => {
-          this.$Spin.hide();
           this.Message("error", err.data.msg);
+          this.table.loading = false;
         });
     },
     // 封装消息提示
