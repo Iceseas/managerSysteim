@@ -22,11 +22,11 @@
         </MenuItem>
         <MenuItem name="single" to="/Managerindex/single">
           <Icon type="md-heart" />
-            单选
+            单选题
         </MenuItem>
         <MenuItem name="vacancy" to="/Managerindex/vacancy">
           <Icon type="md-heart" />
-            填空
+            填空题
         </MenuItem>
       </MenuGroup>
       <MenuGroup title="系统设置">
