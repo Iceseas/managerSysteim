@@ -16,4 +16,5 @@ export const questionApi = {
     getDecideList: params => post('getQuestion/api/getDecideList', params), //用户列表查询接口
     getSingleList: params => post('getQuestion/api/getSingleList', params), //用户列表查询接口
     getVacancyList: params => post('getQuestion/api/getVacancyList', params), //用户列表查询接口
+    getSubjectiveList: params => post('getQuestion/api/getSubjectiveList', params), //用户列表查询接口
 }

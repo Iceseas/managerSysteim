@@ -17,8 +17,8 @@
           :label-width="100"
         >
           <Row>
-            <Col :span="8">
-              <FormItem label="章节：">
+            <Col :span="6">
+              <FormItem label="章节">
                 <Select v-model="FormData.data.chapter" filterable placeholder="请选择">
                   <Option
                     v-for="item in chapterList"
@@ -29,8 +29,8 @@
                 </Select>
               </FormItem>
             </Col>
-            <Col :span="8">
-              <FormItem label="难度：">
+            <Col :span="6">
+              <FormItem label="难度">
                 <Select v-model="FormData.data.difficulty" filterable placeholder="请选择">
                   <Option key="1" label="简单" value="1"></Option>
                   <Option key="2" label="较难" value="2"></Option>

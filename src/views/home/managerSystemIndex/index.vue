@@ -42,7 +42,7 @@
         ></div>
         <div
           id="listEcharts"
-          style="width: 100%;height:300px;box-sizing:border-box;margin-left:-50px"
+          style="width: 100%;height:290px;box-sizing:border-box;margin-left:-50px"
         ></div>
       </Col>
       <Col span="12">
@@ -72,11 +72,11 @@ export default {
     this.listEcharts();
     window.onresize = () => {
       this.$nextTick(() => {
-        this.indexHeight = document.body.clientHeight - 155 + "px";
+        this.indexHeight = document.body.clientHeight - 157 + "px";
       });
     };
     this.$nextTick(() => {
-      this.indexHeight = document.body.clientHeight - 155 + "px";
+      this.indexHeight = document.body.clientHeight - 157 + "px";
     });
   },
   methods: {

@@ -20,7 +20,7 @@ export default {
   data() {
     return {
       table: {
-        height: '525',
+        height: '480',
         columns: [
           {
             title: "头像",

@@ -73,9 +73,16 @@ export default {
     };
   },
   methods: {
-    init(data) {
-      this.FormData.data = data;
-      this.modalData.modalBoolean = true;
+    init(type, data) {
+      this.nowType = type;
+      if(type === 'show') {
+        this.modalData.title = '查看'
+        this.FormData.data = data;
+      } else if (type === 'add') {
+        this.modalData.title = '添加批改'
+        this.FormData.data = data;
+      }
+      this.modalData.modalBoolean = true
     },
     closeModal() {
       this.modalData.modalBoolean = false;
