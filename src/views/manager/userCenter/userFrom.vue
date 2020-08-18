@@ -146,7 +146,6 @@ export default {
       if (type === "edit") {
         this.isDisabled = true;
         this.modalData.title = "更新用户信息";
-        console.log(data)
         this.FormData.data = data;
       } else if (type === "add") {
         this.isDisabled = false;

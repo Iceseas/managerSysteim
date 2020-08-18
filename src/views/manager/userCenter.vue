@@ -36,8 +36,16 @@
             <Col :span="6">
               <FormItem label="性别">
                 <Select v-model="FormData.data.gender">
-                  <Option value="男">男</Option>
-                  <Option value="女">女</Option>
+                  <Option value="1">男</Option>
+                  <Option value="0">女</Option>
+                </Select>
+              </FormItem>
+            </Col>
+            <Col :span="6">
+              <FormItem label="角色">
+                <Select v-model="FormData.data.userRole">
+                  <Option value="1">老师</Option>
+                  <Option value="2">学生</Option>
                 </Select>
               </FormItem>
             </Col>
@@ -107,7 +115,8 @@ export default {
         data: {
           discount: "",
           userName: "",
-          gender:''
+          gender:'',
+          userRole: ''
         },
         rules: {},
       },
