@@ -69,8 +69,8 @@ export default {
         rules:{},
         data:{
           Question: "",
-          Item1: "",
-          Item2: "",
+          Item1: "正确",
+          Item2: "错误",
           Answer: "",
           KN: "",
           Chapter: "",
