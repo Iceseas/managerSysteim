@@ -65,7 +65,7 @@
           <Tag v-else size="large" color="red">困难</Tag>
         </template>
         <template slot-scope="{ row, index }" slot="action">
-          <Button class="marginR10" type="info">查看</Button>
+          <Button class="marginR10" type="info" @click="showFn(row)">查看</Button>
           <Button class="marginR10" type="success" @click="editFn(row)">修改</Button>
           <Button type="error" @click="delFn(row)">删除</Button>
         </template>
@@ -252,6 +252,21 @@ export default {
     addNewQuestion() {
       this.$refs.vacancyQsForm.init("add", {});
     },
+    // 查看
+    showFn(row) {
+      questionApi
+          .getVacancyData({
+            _id: row._id
+          })
+          .then((res) => {
+            this.Message("success", res.data.msg);
+            this.$refs.vacancyQsForm.init("show", res.data.data[0]);
+          })
+          .catch((err) => {
+            this.Message("error", err.data.msg);
+          });
+    },
+    // 修改
     editFn(row) {
       questionApi
           .getVacancyData({
