@@ -3,49 +3,49 @@
     <Menu theme="dark" :active-name="activeName">
       <MenuGroup  title="首页" name="1">
         <MenuItem name="index" to="/Managerindex/index">
-          <Icon type="md-heart" />
+          <Icon type="md-home" />
             首页
         </MenuItem>
       </MenuGroup>
       <MenuGroup title="题库管理">
         <MenuItem name="question" to="/Managerindex/question">
-          <Icon type="md-leaf" />
+          <Icon type="md-home" />
             首页
         </MenuItem>
         <MenuItem name="subjectiveItem" to="/Managerindex/subjectiveItem">
-          <Icon type="md-heart" />
+          <Icon type="md-radio-button-off" />
             主观题
         </MenuItem>
         <MenuItem name="decide" to="/Managerindex/decide">
-          <Icon type="md-heart" />
+          <Icon type="md-radio-button-off" />
             判断题
         </MenuItem>
         <MenuItem name="single" to="/Managerindex/single">
-          <Icon type="md-heart" />
+          <Icon type="md-radio-button-off" />
             单选题
         </MenuItem>
         <MenuItem name="vacancy" to="/Managerindex/vacancy">
-          <Icon type="md-heart" />
+          <Icon type="md-radio-button-off" />
             填空题
         </MenuItem>
       </MenuGroup>
       <MenuGroup title="系统设置">
         <MenuItem name="3">
-          <Icon type="md-heart" />
+          <Icon type="md-options" />
           基本设置
         </MenuItem>
         <MenuItem name="5">
-          <Icon type="md-leaf" />
+          <Icon type="md-paper" />
           系统日志
         </MenuItem>
       </MenuGroup>
       <MenuGroup title="管理员">
         <MenuItem name="6">
-          <Icon type="md-heart" />
+          <Icon type="md-switch" />
           权限管理
         </MenuItem>
         <MenuItem name="userCenter" to="/Managerindex/userCenter">
-          <Icon type="md-leaf" />
+          <Icon type="md-contacts" />
           用户管理
         </MenuItem>
         <MenuItem name="accesslog" to="/Managerindex/accesslog">
