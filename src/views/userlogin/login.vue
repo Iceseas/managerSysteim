@@ -60,7 +60,6 @@
 import { localStorageSetData } from '@/util/localStorageData'
 import { setCookie } from '@/util/cookie'
 import {UserApi} from '@/api/api'
-import axios from "axios";
 export default {
   data() {
     return {
@@ -68,8 +67,8 @@ export default {
       isshowlogin: false,
       isshowreg: false,
       radio: "0",
-      discount: "",
-      password: "",
+      discount: "admin",
+      password: "123456",
       token:null,
     };
   },

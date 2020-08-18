@@ -46,10 +46,19 @@
       <div class="IcontainerTopRow">
         <div class="IcontainerTopTitle">数据列表</div>
         <div class="IcontainerTopBtns">
-          <Button type="primary" @click="addNewQuestion()">添加</Button>
+          <Button class="marginR10" type="primary" @click="addNewQuestion()">添加</Button>
+          <Button type="error" @click="delDatas">批量删除</Button>
         </div>
       </div>
-      <Table :height="table.height" stripe border :columns="table.columns" :loading="table.loading" :data="table.tableData">
+      <Table
+        :height="table.height"
+        stripe
+        border
+        :columns="table.columns"
+        @on-selection-change="handleSelect"
+        :loading="table.loading"
+        :data="table.tableData"
+      >
         <template slot-scope="{ row, index }" slot="difficulty">
           <Tag v-if="row.difficulty==='简单'" size="large" color="green">简单</Tag>
           <Tag v-else-if="row.difficulty==='较难'" size="large" color="gold">较难</Tag>
@@ -57,8 +66,8 @@
         </template>
         <template slot-scope="{ row, index }" slot="action">
           <Button class="marginR10" type="info">查看</Button>
-          <Button class="marginR10" type="success">编辑</Button>
-          <Button type="error">删除</Button>
+          <Button class="marginR10" type="success" @click="editFn(row)">修改</Button>
+          <Button type="error" @click="delFn(row)">删除</Button>
         </template>
       </Table>
     </div>
@@ -93,7 +102,7 @@ export default {
       table: {
         total: 0,
         pageSize: 20,
-        loading:false,
+        loading: false,
         page: 1,
         height: "545",
         columns: [
@@ -113,34 +122,34 @@ export default {
             title: "选项1",
             align: "center",
             tooltip: true,
-            width:'100',
+            width: "100",
             key: "Item1",
           },
           {
             title: "选项2",
             align: "center",
             tooltip: true,
-            width:'100',
+            width: "100",
             key: "Item2",
           },
           {
             title: "选项3",
             align: "center",
             tooltip: true,
-            width:'100',
+            width: "100",
             key: "Item3",
           },
           {
             title: "选项4",
             align: "center",
             tooltip: true,
-            width:'100',
+            width: "100",
             key: "Item4",
           },
           {
             title: "知识点",
             align: "center",
-            width:'200',
+            width: "200",
             tooltip: true,
             key: "KN",
           },
@@ -148,13 +157,13 @@ export default {
             title: "章节",
             align: "center",
             tooltip: true,
-            width:'100',
+            width: "100",
             key: "Chapter",
           },
           {
             title: "难度",
             align: "center",
-            width:'100',
+            width: "100",
             slot: "difficulty",
             tooltip: true,
             key: "difficulty",
@@ -162,7 +171,7 @@ export default {
           {
             title: "答案",
             align: "center",
-            width:'100',
+            width: "100",
             tooltip: true,
             key: "Answer",
           },
@@ -175,6 +184,7 @@ export default {
         ],
         tableData: [],
       },
+      ids: "",
       // 章节
       chapterList: [
         {
@@ -233,6 +243,7 @@ export default {
           label: "第十一章",
         },
       ],
+      selectionItems: [],
     };
   },
   mounted() {
@@ -242,19 +253,122 @@ export default {
     addNewQuestion() {
       this.$refs.singleQsForm.init("add", {});
     },
+    editFn(row) {
+      this.$refs.singleQsForm.init("edit", row);
+    },
     handleQsCallBack(obj, type) {
-      this.table.loading = true;
+      if (type === "add") {
+        this.table.loading = true;
+        questionApi
+          .addSingleData({
+            Question: obj.Question,
+            Item1: obj.Item1,
+            Item2: obj.Item2,
+            Item3: obj.Item3,
+            Item4: obj.Item4,
+            KN: obj.KN,
+            Chapter: obj.Chapter,
+            difficulty: obj.difficulty,
+            Answer: obj.Answer,
+          })
+          .then((res) => {
+            this.Message("success", res.data.msg);
+            this.getList();
+            this.table.loading = false;
+          })
+          .catch((err) => {
+            this.Message("error", err.data.msg);
+            this.getList();
+            this.table.loading = false;
+          });
+      } else if ( type === 'edit') {
+        this.table.loading = true;
+        questionApi
+          .updateSingleList({
+            _id: obj._id,
+            Question: obj.Question,
+            Item1: obj.Item1,
+            Item2: obj.Item2,
+            Item3: obj.Item3,
+            Item4: obj.Item4,
+            KN: obj.KN,
+            Chapter: obj.Chapter,
+            difficulty: obj.difficulty,
+            Answer: obj.Answer,
+          })
+          .then((res) => {
+            this.Message("success", res.data.msg);
+            this.getList();
+            this.table.loading = false;
+          })
+          .catch((err) => {
+            this.Message("error", err.data.msg);
+            this.getList();
+            this.table.loading = false;
+          });
+      }
+    },
+    // 表格选择
+    handleSelect(selection) {
+      this.selectionItems = selection;
+      this.ids = selection
+        .map(function (obj, index) {
+          return obj._id;
+        })
+        .join(",");
+    },
+    delDatas() {
+      if (this.selectionItems.length === 0) {
+        this.Message("warning", "请选择至少一项!");
+        return;
+      }
+      this.$Modal.confirm({
+        title: "批量删除",
+        content: "<p>确定要删除已选项吗？</p>",
+        onOk: () => {
+          this.delDatasFnAjax();
+        },
+        onCancel: () => {
+          this.Message("info", "取消删除");
+        },
+      });
+    },
+    // 批量删除Ajax
+    delDatasFnAjax() {
       questionApi
-        .addSingleData({
-          Question: obj.Question,
-          Item1: obj.Item1,
-          Item2: obj.Item2,
-          Item3: obj.Item3,
-          Item4: obj.Item4,
-          KN: obj.KN,
-          Chapter: obj.Chapter,
-          difficulty: obj.difficulty,
-          Answer: obj.Answer,
+        .delData({
+          ids: this.ids,
+          questionType: "decide",
+        })
+        .then((res) => {
+          this.Message("success", res.data.msg);
+          this.getList();
+          this.table.loading = false;
+        })
+        .catch((err) => {
+          this.Message("error", err.data.msg);
+          this.getList();
+          this.table.loading = false;
+        });
+    },
+    delFn(row) {
+      this.$Modal.confirm({
+        title: "批量删除",
+        content: "<p>确定要删除吗？</p>",
+        onOk: () => {
+          this.delFnAjax(row._id);
+        },
+        onCancel: () => {
+          this.Message("info", "取消删除");
+        },
+      });
+    },
+    // 单个删除Ajax
+    delFnAjax(_id) {
+      questionApi
+        .delData({
+          ids: _id,
+          questionType: "single",
         })
         .then((res) => {
           this.Message("success", res.data.msg);
@@ -288,7 +402,7 @@ export default {
         .then((res) => {
           this.table.tableData = res.data.info.list;
           this.table.total = res.data.info.count;
-         this.table.loading = false;
+          this.table.loading = false;
         })
         .catch((err) => {
           this.Message("error", err.data.msg);

@@ -82,8 +82,9 @@ export default {
   methods:{
     init(type, data) {
       this.nowType = type;
-      if(type === 'update') {
+      if(type === 'edit') {
         this.modalData.title = '更新判断题'
+        console.log('eid:',data)
         this.FormData.data = data;
       } else if (type === 'add') {
         this.$refs.formList.resetFields();

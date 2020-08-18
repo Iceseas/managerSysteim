@@ -92,7 +92,7 @@ export default {
   methods:{
     init(type, data) {
       this.nowType = type;
-      if(type === 'update') {
+      if(type === 'edit') {
         this.modalData.title = '更新选择题'
         this.FormData.data = data;
       } else if (type === 'add') {

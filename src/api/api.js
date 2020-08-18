@@ -10,11 +10,25 @@ export const managerApi = {
 }
 
 export const questionApi = {
+    // 添加
     addDecideData: params => post('addQuestion/api/addDecideData', params), //添加判断题接口
     addSingleData: params => post('addQuestion/api/addSingleData', params), //添加单选题接口
     addVacancyData: params => post('addQuestion/api/addVacancyData', params), //添加填空题接口
+    // 获取
     getDecideList: params => post('getQuestion/api/getDecideList', params), //用户列表查询接口
     getSingleList: params => post('getQuestion/api/getSingleList', params), //用户列表查询接口
     getVacancyList: params => post('getQuestion/api/getVacancyList', params), //用户列表查询接口
     getSubjectiveList: params => post('getQuestion/api/getSubjectiveList', params), //用户列表查询接口
+    // 删除
+    delData: params => post('deleteQuestion/api/DeleteQuestionData', params), //删除接口
+    // 修改
+    updateDecideList: params => post('updateQuestion/api/decideUpdate', params), //用户列表查询接口
+    updateSingleList: params => post('updateQuestion/api/singleUpdate', params), //用户列表查询接口
+    updateVacancyList: params => post('updateQuestion/api/vacancyUpdate', params), //用户列表查询接口
+    updateSubjectiveList: params => post('updateQuestion/api/subjectiveUpdate', params), //用户列表查询接口
+    // 查询
+    getDecideData: params => post('getQuestion/api/getDecideData', params), //查询单个数据接口
+    getSingleData: params => post('getQuestion/api/getSingleData', params), //查询单个数据接口
+    getVacancyData: params => post('getQuestion/api/getVacancyData', params), //查询单个数据接口
+    getSubjectiveData: params => post('getQuestion/api/getSubjectiveData', params), //查询单个数据接口
 }
