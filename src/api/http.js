@@ -107,7 +107,7 @@ export function get(url, params) {
  */
 export function post(url, params) {
     return new Promise((resolve, reject) => {
-        axios.post(url, QS.stringify(params))
+        axios.post(url, (params))
             .then(res => {
                 resolve(res)
             })

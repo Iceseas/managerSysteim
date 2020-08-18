@@ -164,12 +164,32 @@ export default {
   },
   methods: {
     addNewQuestion(row) {
-      this.$refs.markSubjective.init("add", row);
+      questionApi
+          .getSubjectiveData({
+            _id: row._id
+          })
+          .then((res) => {
+            this.Message("success", res.data.msg);
+            this.$refs.markSubjective.init("add", res.data.data[0]);
+          })
+          .catch((err) => {
+            this.Message("error", err.data.msg);
+          });
     },
     handleQsCallBack(obj, type) {
       this.table.loading = true;
       questionApi
-        .addVacancyData(obj)
+        .updateSubjectiveList({
+          _id: obj._id,
+          grade: obj.grade,
+          problem_Title: obj.problem_Title,
+          problemsAnswer: obj.problemsAnswer,
+          remark: obj.remark,
+          stuClass: obj.stuClass,
+          stuID: obj.stuID,
+          stuName: obj.stuName,
+          submitTime: obj.submitTime,
+        })
         .then((res) => {
           this.Message("success", res.data.msg);
           this.getList();

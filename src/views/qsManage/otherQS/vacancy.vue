@@ -253,7 +253,17 @@ export default {
       this.$refs.vacancyQsForm.init("add", {});
     },
     editFn(row) {
-      this.$refs.vacancyQsForm.init("edit", row);
+      questionApi
+          .getVacancyData({
+            _id: row._id
+          })
+          .then((res) => {
+            this.Message("success", res.data.msg);
+            this.$refs.vacancyQsForm.init("edit", res.data.data[0]);
+          })
+          .catch((err) => {
+            this.Message("error", err.data.msg);
+          });
     },
     handleQsCallBack(obj, type) {
       if (type === "add") {

@@ -254,7 +254,17 @@ export default {
       this.$refs.singleQsForm.init("add", {});
     },
     editFn(row) {
-      this.$refs.singleQsForm.init("edit", row);
+      questionApi
+          .getSingleData({
+            _id: row._id
+          })
+          .then((res) => {
+            this.Message("success", res.data.msg);
+            this.$refs.singleQsForm.init("edit", res.data.data[0]);
+          })
+          .catch((err) => {
+            this.Message("error", err.data.msg);
+          });
     },
     handleQsCallBack(obj, type) {
       if (type === "add") {
