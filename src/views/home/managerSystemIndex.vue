@@ -76,4 +76,7 @@ export default {
   margin: 0 auto;
   margin-right: 20px;
 }
+>>>.ivu-layout-header {
+  background: #17233d;
+}
 </style>

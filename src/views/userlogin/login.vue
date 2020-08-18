@@ -97,10 +97,9 @@ export default {
         password: this.password,
       }) .then((res) => {
           if (res.data.err == 0) {
-            console.log('111')
             localStorageSetData('nowLoginUserCount', that.discount)
             localStorageSetData('nowLoginUserName', res.data.data[0].userName)
-            setCookie('token', that.discount)
+            setCookie('token', res.data.token)
             this.$Spin.hide()
             this.Message('success', res.data.msg)
             this.$router.push({
