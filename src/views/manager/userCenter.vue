@@ -78,7 +78,7 @@
         </template>
         <template slot-scope="{ row, index }" slot="action">
           <Button class="marginR10" type="info" @click="editFn(row)">编辑</Button>
-          <Button class="marginR10" type="error" >禁用</Button>
+          <Button class="marginR10" type="error" @click="delFn(row)">删除</Button>
           <Button type="success" >密码重置</Button>
         </template>
       </Table>
@@ -199,11 +199,50 @@ export default {
     handleAddNewUser(data, type) {
       if(type === 'add') {
         this.addNewUserAjax(data)
+      } else if (type === 'edit') {
+        this.table.loading = true;
+        managerApi
+          .updateUserData({
+            _id: data._id,
+            userName: data.userName,
+            discount: data.discount,
+            password: data.password,
+            telephone: data.telephone,
+            gender: data.gender,
+            userRole: data.userRole,
+            userGrade: data.userGrade,
+            userClass: data.userClass,
+            userimg: data.userimg,
+            status: data.status,
+            stuID: data.stuID,
+            major: data.major,
+            isOnline: data.isOnline,
+          })
+          .then((res) => {
+            this.Message("success", res.data.msg);
+            this.getList();
+            this.table.loading = false;
+          })
+          .catch((err) => {
+            this.Message("error", err.data.msg);
+            this.getList();
+            this.table.loading = false;
+          });
       }
     },
     // 编辑人员
     editFn(row) {
-      this.$refs.openUserFrom.init('edit', row)
+     managerApi
+          .getUserData({
+            _id: row._id
+          })
+          .then((res) => {
+            this.Message("success", res.data.msg);
+            this.$refs.openUserFrom.init("edit", res.data.data[0]);
+          })
+          .catch((err) => {
+            this.Message("error", err.data.msg);
+          });
     },
     // 添加人员
     addNewUserAjax(data) {
@@ -248,6 +287,35 @@ export default {
         this.Message('error', err.data.msg)
         this.table.loading = false;
       })
+    },
+    delFn(row) {
+      this.$Modal.confirm({
+        title: "批量删除",
+        content: "<p>确定要删除吗？</p>",
+        onOk: () => {
+          this.delFnAjax(row._id);
+        },
+        onCancel: () => {
+          this.Message("info", "取消删除");
+        },
+      });
+    },
+    // 单个删除Ajax
+    delFnAjax(_id) {
+      managerApi
+        .delData({
+          ids: _id,
+        })
+        .then((res) => {
+          this.Message("success", res.data.msg);
+          this.getList();
+          this.table.loading = false;
+        })
+        .catch((err) => {
+          this.Message("error", err.data.msg);
+          this.getList();
+          this.table.loading = false;
+        });
     },
     // 封装消息提示
     Message(type, content, duration, closable) {

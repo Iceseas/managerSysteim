@@ -6,6 +6,10 @@ export const UserApi = {
 
 export const managerApi = {
     addUser: params => post('ManagerCount/api/addNewUser', params), //添加用户接口
+    updateUserData: params => post('ManagerCount/api/userDataUpdate', params), //修改用户信息
+    // 删除
+    delData: params => post('ManagerCount/api/DeleteUserData', params), //删除接口
+    getUserData: params => post('ManagerCount/api/getUserData', params), //查询单个数据接口
     getList: params => post('ManagerCount/api/getUserList', params), //用户列表查询接口
 }
 

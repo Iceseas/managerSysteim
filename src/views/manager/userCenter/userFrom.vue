@@ -19,12 +19,12 @@
           </Col>
           <Col :span="12">
             <FormItem label="用户名" prop="discount">
-              <Input v-model="FormData.data.discount" placeholder="请输入"></Input>
+              <Input :disabled="isDisabled" v-model="FormData.data.discount" placeholder="请输入"></Input>
             </FormItem>
           </Col>
           <Col :span="12">
             <FormItem label="密码" prop="password">
-              <Input type="password" v-model="FormData.data.password" placeholder="请输入"></Input>
+              <Input :disabled="isDisabled" type="password" v-model="FormData.data.password" placeholder="请输入"></Input>
             </FormItem>
           </Col>
           <Col :span="12">
@@ -118,6 +118,7 @@ export default {
         modalBoolean: false,
       },
       nowType: "",
+      isDisabled: false,
       rePassword: "",
       FormData: {
         rules: {},
@@ -134,7 +135,7 @@ export default {
           status: "1",
           stuID: "",
           major: "",
-          isOnline:"false"
+          isOnline: false
         },
       },
     };
@@ -143,10 +144,12 @@ export default {
     init(type, data) {
       this.nowType = type;
       if (type === "edit") {
+        this.isDisabled = true;
         this.modalData.title = "更新用户信息";
         console.log(data)
         this.FormData.data = data;
       } else if (type === "add") {
+        this.isDisabled = false;
         this.$refs.formList.resetFields();
         this.modalData.title = "添加用户";
       } else if (type === "show") {
