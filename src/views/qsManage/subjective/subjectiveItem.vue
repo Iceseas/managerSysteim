@@ -4,7 +4,7 @@
       <div class="IcontainerTopRow">
         <div class="IcontainerTopTitle">查询列表</div>
         <div class="IcontainerTopBtns">
-          <Button class="marginR10" type="primary">查询</Button>
+          <Button class="marginR10" type="primary" @click="searchFn">查询</Button>
           <Button type="primary" @click="resetFn">重置</Button>
         </div>
       </div>
@@ -18,34 +18,10 @@
         >
           <Row>
             <Col :span="6">
-              <FormItem label="姓名" prop="stuName">
+              <FormItem label="模糊搜索" prop="kw">
                 <Input
-                  v-model="FormData.data.stuName"
-                  placeholder="请输入"
-                ></Input>
-              </FormItem>
-            </Col>
-            <Col :span="6">
-              <FormItem label="学号" prop="stuID">
-                <Input
-                  v-model="FormData.data.stuID"
-                  placeholder="请输入"
-                ></Input>
-              </FormItem>
-            </Col>
-            <Col :span="6">
-              <FormItem label="专业" prop="stuClass">
-                <Input
-                  v-model="FormData.data.stuClass"
-                  placeholder="请输入"
-                ></Input>
-              </FormItem>
-            </Col>
-            <Col :span="6">
-              <FormItem label="作业名" prop="problem_Title">
-                <Input
-                  v-model="FormData.data.problem_Title"
-                  placeholder="请输入"
+                  v-model="FormData.data.kw"
+                  placeholder="请输入名称/姓名/学号/日期"
                 ></Input>
               </FormItem>
             </Col>
@@ -73,8 +49,8 @@
     </div>
     <Page
       :total="table.total"
-      :current="table.page"
-      :page-size="table.pageSize"
+      :current="FormData.data.page"
+      :page-size="FormData.data.pageSize"
       show-total
       show-elevator
       show-sizer
@@ -94,18 +70,15 @@ export default {
       // 查询条件
       FormData: {
         data: {
-          stuName: "",
-          stuID: "",
-          stuClass: "",
-          problem_Title: "",
+          kw: "",
+          pageSize: 20,
+          page: 1,
         },
         rules: {},
       },
       table: {
         total: 0,
-        pageSize: 20,
         loading: false,
-        page: 1,
         height: "515",
         columns: [
           {
@@ -176,6 +149,10 @@ export default {
             this.Message("error", err.data.msg);
           });
     },
+    searchFn() {
+      this.FormData.data.page = 1;
+      this.getList()
+    },
     handleQsCallBack(obj, type) {
       this.table.loading = true;
       questionApi
@@ -207,22 +184,19 @@ export default {
     },
     // pageSize改变
     pageSizeChange(value) {
-      this.table.pageSize = value;
+      this.FormData.data.pageSize = value;
       this.getList();
     },
     // page改变
     pageChange(value) {
-      this.table.page = value;
+      this.FormData.data.page = value;
       this.getList();
     },
     // 查询列表数据
     getList() {
       this.table.loading = true;
       questionApi
-        .getSubjectiveList({
-          pageSize: this.table.pageSize,
-          page: this.table.page,
-        })
+        .getSubjectiveList(this.FormData.data)
         .then((res) => {
           this.table.tableData = res.data.info.list;
           this.table.total = res.data.info.count;

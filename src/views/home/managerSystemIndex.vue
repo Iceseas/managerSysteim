@@ -15,7 +15,7 @@
           <Content
             :style="{ minHeight: '280px' }"
           >
-            <router-view></router-view>
+            <router-view class="animate__animated animate__fadeIn" ></router-view>
           </Content>
         </Layout>
       </Layout>

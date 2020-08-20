@@ -4,7 +4,7 @@
       <div class="IcontainerTopRow">
         <div class="IcontainerTopTitle">查询列表</div>
         <div class="IcontainerTopBtns">
-          <Button class="marginR10" type="primary">查询</Button>
+          <Button class="marginR10" type="primary" @click="searchFn">查询</Button>
           <Button type="primary" @click="resetFn">重置</Button>
         </div>
       </div>
@@ -18,24 +18,11 @@
         >
           <Row>
             <Col :span="6">
-              <FormItem label="章节" prop="chapter">
-                <Select v-model="FormData.data.chapter" filterable placeholder="请选择">
-                  <Option
-                    v-for="item in chapterList"
-                    :key="item.value"
-                    :label="item.label"
-                    :value="item.value"
-                  ></Option>
-                </Select>
-              </FormItem>
-            </Col>
-            <Col :span="6">
-              <FormItem label="难度" prop="difficulty">
-                <Select v-model="FormData.data.difficulty" filterable placeholder="请选择">
-                  <Option key="1" label="简单" value="1"></Option>
-                  <Option key="2" label="较难" value="2"></Option>
-                  <Option key="3" label="困难" value="3"></Option>
-                </Select>
+              <FormItem label="模糊搜索" prop="kw">
+                <Input
+                  v-model="FormData.data.kw"
+                  placeholder="请输入章节/难度"
+                ></Input>
               </FormItem>
             </Col>
           </Row>
@@ -73,8 +60,8 @@
     </div>
     <Page
       :total="table.total"
-      :current="table.page"
-      :page-size="table.pageSize"
+      :current="FormData.data.page"
+      :page-size="FormData.data.pageSize"
       show-total
       show-elevator
       show-sizer
@@ -94,17 +81,16 @@ export default {
       // 查询条件
       FormData: {
         data: {
-          chapter: "",
-          difficulty: "",
+          kw: "",
+          pageSize: 20,
+          page: 1,
         },
         rules: {},
       },
       ids: "",
       table: {
         total: 0,
-        pageSize: 20,
         loading: false,
-        page: 1,
         height: "515",
         columns: [
           {
@@ -321,6 +307,10 @@ export default {
           });
       }
     },
+    searchFn() {
+      this.FormData.data.page = 1;
+      this.getList()
+    },
     // 表格选择
     handleSelect(selection) {
       this.selectionItems = selection;
@@ -332,12 +322,12 @@ export default {
     },
     // pageSize改变
     pageSizeChange(value) {
-      this.table.pageSize = value;
+      this.FormData.data.pageSize = value;
       this.getList();
     },
     // page改变
     pageChange(value) {
-      this.table.page = value;
+      this.FormData.data.page = value;
       this.getList();
     },
     delDatas() {
@@ -409,10 +399,7 @@ export default {
     getList() {
       this.table.loading = true;
       questionApi
-        .getDecideList({
-          pageSize: this.table.pageSize,
-          page: this.table.page,
-        })
+        .getDecideList(this.FormData.data)
         .then((res) => {
           this.table.tableData = res.data.info.list;
           this.table.total = res.data.info.count;

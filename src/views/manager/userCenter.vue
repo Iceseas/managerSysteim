@@ -4,7 +4,7 @@
       <div class="IcontainerTopRow">
         <div class="IcontainerTopTitle">查询列表</div>
         <div class="IcontainerTopBtns">
-          <Button class="marginR10" type="primary">查询</Button>
+          <Button class="marginR10" type="primary" @click="searchFn">查询</Button>
           <Button type="primary" @click="resetFn">重置</Button>
         </div>
       </div>
@@ -18,35 +18,11 @@
         >
           <Row>
             <Col :span="6">
-              <FormItem label="用户名" prop="userCountName">
+              <FormItem label="模糊搜索" prop="kw">
                 <Input
-                  v-model="FormData.data.userCountName"
-                  placeholder="请输入"
+                  v-model="FormData.data.kw"
+                  placeholder="请输入用户名/姓名/角色"
                 ></Input>
-              </FormItem>
-            </Col>
-            <Col :span="6">
-              <FormItem label="姓名" prop="userName">
-                <Input
-                  v-model="FormData.data.userName"
-                  placeholder="请输入"
-                ></Input>
-              </FormItem>
-            </Col>
-            <Col :span="6">
-              <FormItem label="性别" prop="gender">
-                <Select v-model="FormData.data.gender">
-                  <Option value="1">男</Option>
-                  <Option value="0">女</Option>
-                </Select>
-              </FormItem>
-            </Col>
-            <Col :span="6">
-              <FormItem label="角色" prop="userRole">
-                <Select v-model="FormData.data.userRole">
-                  <Option value="1">老师</Option>
-                  <Option value="2">学生</Option>
-                </Select>
               </FormItem>
             </Col>
           </Row>
@@ -104,7 +80,6 @@
 </template>
 
 <script>
-import axios from 'axios';
 import openUserFrom from './userCenter/userFrom'
 import { managerApi } from '@/api/api'
 export default {
@@ -113,10 +88,9 @@ export default {
     return {
       FormData: {
         data: {
-          discount: "",
-          userName: "",
-          gender:'',
-          userRole: ''
+          kw: "",
+          pageSize: 20,
+          page: 1,
         },
         rules: {},
       },
@@ -239,6 +213,10 @@ export default {
           });
       }
     },
+    searchFn() {
+      this.table.page = 1;
+      this.getList()
+    },
     // 编辑人员
     editFn(row) {
      managerApi
@@ -286,12 +264,11 @@ export default {
     },
     // 查询列表数据
     getList() {
+      this.FormData.data.pageSize = this.table.pageSize;
+      this.FormData.data.page = this.table.page;
       this.table.loading = true;
       managerApi
-      .getList({
-        pageSize: this.table.pageSize,
-        page: this.table.page
-      })
+      .getList(this.FormData.data)
       .then(res=>{
         this.table.tableData = res.data.info.list;
         this.table.total = res.data.info.count;
