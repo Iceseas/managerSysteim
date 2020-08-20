@@ -5,7 +5,7 @@
         <div class="IcontainerTopTitle">查询列表</div>
         <div class="IcontainerTopBtns">
           <Button class="marginR10" type="primary">查询</Button>
-          <Button type="primary">重置</Button>
+          <Button type="primary" @click="resetFn">重置</Button>
         </div>
       </div>
       <div class="searchFormBody">
@@ -18,7 +18,7 @@
         >
           <Row>
             <Col :span="6">
-              <FormItem label="用户名">
+              <FormItem label="用户名" prop="userCountName">
                 <Input
                   v-model="FormData.data.userCountName"
                   placeholder="请输入"
@@ -26,7 +26,7 @@
               </FormItem>
             </Col>
             <Col :span="6">
-              <FormItem label="姓名">
+              <FormItem label="姓名" prop="userName">
                 <Input
                   v-model="FormData.data.userName"
                   placeholder="请输入"
@@ -34,7 +34,7 @@
               </FormItem>
             </Col>
             <Col :span="6">
-              <FormItem label="性别">
+              <FormItem label="性别" prop="gender">
                 <Select v-model="FormData.data.gender">
                   <Option value="1">男</Option>
                   <Option value="0">女</Option>
@@ -42,7 +42,7 @@
               </FormItem>
             </Col>
             <Col :span="6">
-              <FormItem label="角色">
+              <FormItem label="角色" prop="userRole">
                 <Select v-model="FormData.data.userRole">
                   <Option value="1">老师</Option>
                   <Option value="2">学生</Option>
@@ -269,6 +269,10 @@ export default {
         this.Message('error', err.data.msg)
         this.table.loading = false;
       })
+    },
+    // 重置搜索
+    resetFn() {
+      this.$refs.formList.resetFields()
     },
     // pageSize改变
     pageSizeChange(value){

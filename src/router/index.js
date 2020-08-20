@@ -131,8 +131,6 @@ const routes = [
 ];
 const router = new VueRouter({
   mode: "history",
-  //base: process.env.BASE_URL,
-  // linkActiveClass:'' 设置点击的样式
   routes,
 });
 // 页面检查cookie是否含有token

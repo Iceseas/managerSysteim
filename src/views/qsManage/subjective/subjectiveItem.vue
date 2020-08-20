@@ -5,7 +5,7 @@
         <div class="IcontainerTopTitle">查询列表</div>
         <div class="IcontainerTopBtns">
           <Button class="marginR10" type="primary">查询</Button>
-          <Button type="primary">重置</Button>
+          <Button type="primary" @click="resetFn">重置</Button>
         </div>
       </div>
       <div class="searchFormBody">
@@ -18,7 +18,7 @@
         >
           <Row>
             <Col :span="6">
-              <FormItem label="姓名">
+              <FormItem label="姓名" prop="stuName">
                 <Input
                   v-model="FormData.data.stuName"
                   placeholder="请输入"
@@ -26,7 +26,7 @@
               </FormItem>
             </Col>
             <Col :span="6">
-              <FormItem label="学号">
+              <FormItem label="学号" prop="stuID">
                 <Input
                   v-model="FormData.data.stuID"
                   placeholder="请输入"
@@ -34,7 +34,7 @@
               </FormItem>
             </Col>
             <Col :span="6">
-              <FormItem label="专业">
+              <FormItem label="专业" prop="stuClass">
                 <Input
                   v-model="FormData.data.stuClass"
                   placeholder="请输入"
@@ -42,7 +42,7 @@
               </FormItem>
             </Col>
             <Col :span="6">
-              <FormItem label="作业名">
+              <FormItem label="作业名" prop="problem_Title">
                 <Input
                   v-model="FormData.data.problem_Title"
                   placeholder="请输入"
@@ -200,6 +200,10 @@ export default {
           this.getList();
           this.table.loading = false;
         });
+    },
+    // 重置搜索
+    resetFn() {
+      this.$refs.formList.resetFields()
     },
     // pageSize改变
     pageSizeChange(value) {

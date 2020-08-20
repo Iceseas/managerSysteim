@@ -5,7 +5,7 @@
         <div class="IcontainerTopTitle">查询列表</div>
         <div class="IcontainerTopBtns">
           <Button class="marginR10" type="primary">查询</Button>
-          <Button type="primary">重置</Button>
+          <Button type="primary" @click="resetFn">重置</Button>
         </div>
       </div>
       <div class="searchFormBody">
@@ -18,7 +18,7 @@
         >
           <Row>
             <Col :span="6">
-              <FormItem label="章节">
+              <FormItem label="章节" prop="chapter">
                 <Select v-model="FormData.data.chapter" filterable placeholder="请选择">
                   <Option
                     v-for="item in chapterList"
@@ -30,7 +30,7 @@
               </FormItem>
             </Col>
             <Col :span="6">
-              <FormItem label="难度">
+              <FormItem label="难度" prop="difficulty">
                 <Select v-model="FormData.data.difficulty" filterable placeholder="请选择">
                   <Option key="1" label="简单" value="1"></Option>
                   <Option key="2" label="较难" value="2"></Option>
@@ -331,6 +331,10 @@ export default {
             this.table.loading = false;
           });
       }
+    },
+    // 重置搜索
+    resetFn() {
+      this.$refs.formList.resetFields()
     },
     // 表格选择
     handleSelect(selection) {

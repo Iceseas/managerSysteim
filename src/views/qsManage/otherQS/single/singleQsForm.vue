@@ -93,9 +93,11 @@ export default {
     init(type, data) {
       this.nowType = type;
       if(type === 'edit') {
+        this.isDisabled = false;
         this.modalData.title = '更新选择题'
         this.FormData.data = data;
       } else if (type === 'add') {
+        this.isDisabled = false;
         this.$refs.formList.resetFields();
         this.modalData.title = '添加选择题'
       } else if(type === 'show') {

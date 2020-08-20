@@ -83,10 +83,12 @@ export default {
     init(type, data) {
       this.nowType = type;
       if(type === 'edit') {
+        this.isDisabled = false;
         this.modalData.title = '更新判断题'
         console.log('eid:',data)
         this.FormData.data = data;
       } else if (type === 'add') {
+        this.isDisabled = false;
         this.$refs.formList.resetFields();
         this.modalData.title = '添加判断题'
       } else if(type === 'show') {
