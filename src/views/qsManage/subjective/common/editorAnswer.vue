@@ -25,11 +25,12 @@ export default {
         modalBoolean: false,
       },
       editorData: '',
-      nowIndex:0
+      nowIndex:null
     };
   },
   methods:{
       init(data, index) {
+        console.log(index)
           this.editorData = data;
           this.nowIndex = index;
           this.$refs.Editor.init(data);
@@ -42,6 +43,8 @@ export default {
           this.editorData = this.editorData.slice(3);
           this.editorData = this.editorData.substring(0, this.editorData.length - 4);
           this.$emit("callBack", this.editorData, this.nowIndex);
+          this.editorData = '';
+          this.nowIndex = null;
           this.modalData.modalBoolean = false;
       }
   }

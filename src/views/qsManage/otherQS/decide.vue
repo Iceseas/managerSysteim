@@ -105,7 +105,7 @@ export default {
         pageSize: 20,
         loading: false,
         page: 1,
-        height: "545",
+        height: "515",
         columns: [
           {
             type: "selection",

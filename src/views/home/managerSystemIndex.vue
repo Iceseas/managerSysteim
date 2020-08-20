@@ -8,8 +8,8 @@
         <Sider hide-trigger :style="{ background: '#fff' }">
           <asideNav></asideNav>
         </Sider>
-        <Layout :style="{ padding: '0 24px 24px' }">
-          <Breadcrumb :style="{ margin: '24px 0' }">
+        <Layout :style="{ padding: '0 24px 24px', minWidth: '1200px'  }">
+          <Breadcrumb :style="{ margin: '24px 0'}">
             <BreadcrumbItem :to="path(index)" v-for="(item, index) in $route.meta.name" :key="index">{{item}}</BreadcrumbItem>
           </Breadcrumb>
           <Content

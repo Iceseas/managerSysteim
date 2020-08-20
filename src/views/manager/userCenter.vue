@@ -125,7 +125,7 @@ export default {
         pageSize: 20,
         page: 1,
         loading: false,
-        height: "545",
+        height: "515",
         columns: [
           {
             title:'序号',

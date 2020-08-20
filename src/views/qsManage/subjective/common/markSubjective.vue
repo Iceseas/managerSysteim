@@ -37,7 +37,7 @@
             <Icon type="md-create"></Icon>
             {{ `第${index + 1}题` }}
           </p>
-          <a href="#" slot="extra" @click.prevent="markAnswer(FormData.data.problemsAnswer[index])">
+          <a href="#" slot="extra" @click.prevent="markAnswer(FormData.data.problemsAnswer[index],index)">
             <Icon type="ios-loop-strong"></Icon>
             添加备注
           </a>
@@ -101,6 +101,7 @@ export default {
       this.$refs.editorAnswer.init(data, index);
     },
     handleEditor(obj, index) {
+      console.log(obj ,index)
       this.FormData.data.problemsAnswer.splice(index, 1, obj)
     }
   },
