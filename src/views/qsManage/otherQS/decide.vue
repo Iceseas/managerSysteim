@@ -20,8 +20,9 @@
             <Col :span="6">
               <FormItem label="模糊搜索" prop="kw">
                 <Input
+                  clearable
                   v-model="FormData.data.kw"
-                  placeholder="请输入章节/难度"
+                  placeholder="章节/难度"
                 ></Input>
               </FormItem>
             </Col>

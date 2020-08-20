@@ -9,7 +9,8 @@ const routes = [
     path: "/login",
     name: "login",
     meta:{
-      allowBack: false
+      allowBack: false,
+      title:'首页'
     },
     component: () => import ('@/views/userlogin/login'),
   },
@@ -28,7 +29,7 @@ const routes = [
         component: () => import ('@/views/home/managerSystemIndex/index'),
         meta: {
           checkLogined: true,
-          title: 'index',
+          title: '首页',
           name:['首页'],
           path:['/Managerindex/index'],
           allowBack: false
@@ -40,7 +41,7 @@ const routes = [
         component: () => import ('@/views/manager/accesslog'),
         meta: {
           checkLogined: true,
-          title: 'accesslog',
+          title: '访问记录',
           name:['首页','访问记录'],
           path:['/Managerindex/index','/Managerindex/accesslog'],
           allowBack: true
@@ -52,7 +53,7 @@ const routes = [
         component: () => import ('@/views/qsManage/otherQS/common/showallquestion'),
         meta: {
           checkLogined: true,
-          title: 'question',
+          title: '题库管理',
           name:['首页','题库管理'],
           path:['/Managerindex/index','/Managerindex/question'],
           allowBack: true,
@@ -64,7 +65,7 @@ const routes = [
         component: () => import ('@/views/qsManage/subjective/subjectiveItem'),
         meta: {
           checkLogined: true,
-          title: 'subjectiveItem',
+          title: '主观题',
           name:['首页','题库管理','主观题'],
           path:['/Managerindex/index','/Managerindex/question','/Managerindex/subjectiveItem'],
           allowBack: true
@@ -76,7 +77,7 @@ const routes = [
         component: () => import ('@/views/qsManage/otherQS/decide'),
         meta: {
           checkLogined: true,
-          title: 'decide',
+          title: '判断题',
           name:['首页','题库管理','判断题'],
           path:['/Managerindex/index','/Managerindex/question','/Managerindex/decide'],
           allowBack: true
@@ -88,7 +89,7 @@ const routes = [
         component: () => import ('@/views/qsManage/otherQS/single'),
         meta: {
           checkLogined: true,
-          title: 'single',
+          title: '单选题',
           name:['首页','题库管理','单选题'],
           path:['/Managerindex/index','/Managerindex/question','/Managerindex/single'],
           allowBack: true
@@ -100,7 +101,7 @@ const routes = [
         component: () => import ('@/views/qsManage/otherQS/vacancy'),
         meta: {
           checkLogined: true,
-          title: 'vacancy',
+          title: '填空题',
           name:['首页','题库管理','填空题'],
           path:['/Managerindex/index','/Managerindex/question','/Managerindex/vacancy'],
           allowBack: true
@@ -112,7 +113,7 @@ const routes = [
         component: () => import ('@/views/manager/userCenter'),
         meta: {
           checkLogined: true,
-          title: 'userCenter',
+          title: '用户管理',
           name:['首页','用户管理'],
           path:['/Managerindex/index','/Managerindex/userCenter'],
           allowBack: true
@@ -135,6 +136,10 @@ const router = new VueRouter({
 });
 // 页面检查cookie是否含有token
 router.beforeEach((to, from, next) => {
+  // 改变页面title
+  if(to.meta.title) {
+    document.title = to.meta.title
+  }
   if (to.meta.checkLogined) {
     if (getCookie("token") == null) {
       next("login");
