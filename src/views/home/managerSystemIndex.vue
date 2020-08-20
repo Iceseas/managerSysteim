@@ -1,7 +1,7 @@
 <template>
   <div class="layout">
     <Layout>
-      <Header :style="{ borderBottom: '1px solid #17233d', background:'#3887be' }">
+      <Header :style="{ background:'#3887be' }">
         <headerNav></headerNav>
       </Header>
       <Layout>
@@ -15,7 +15,9 @@
           <Content
             :style="{ minHeight: '280px' }"
           >
+          <!-- <keep-alive> -->
             <router-view class="animate__animated animate__fadeIn" ></router-view>
+          <!-- </keep-alive> -->
           </Content>
         </Layout>
       </Layout>

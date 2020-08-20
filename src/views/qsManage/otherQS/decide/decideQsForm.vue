@@ -1,7 +1,6 @@
 <template>
   <Modal v-model="modalData.modalBoolean" width="660">
     <div slot="header">
-      <Icon type="ios-information-circle"></Icon>
       <span style="font-size:20px">{{modalData.title}}</span>
     </div>
     <div>

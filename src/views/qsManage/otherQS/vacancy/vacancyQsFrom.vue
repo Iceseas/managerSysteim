@@ -1,7 +1,6 @@
 <template>
   <Modal v-model="modalData.modalBoolean" width="660">
     <div slot="header">
-      <Icon type="ios-information-circle"></Icon>
       <span style="font-size:20px">{{modalData.title}}</span>
       <p style="color:#ff9900">填空题的空位如果有候选词，请用(),()的形式填写，并且使用英文逗号！</p>
     </div>
