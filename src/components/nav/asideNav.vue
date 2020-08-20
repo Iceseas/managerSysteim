@@ -1,6 +1,6 @@
 <template>
   <div class="asideNav_body">
-    <Menu theme="dark" :active-name="activeName">
+    <Menu :active-name="activeName">
       <MenuGroup  title="首页" name="1">
         <MenuItem name="index" to="/Managerindex/index">
           <Icon type="md-home" />

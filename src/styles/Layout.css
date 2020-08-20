@@ -34,6 +34,26 @@
   padding-top: 20px;
   box-sizing: border-box;
 }
+/* 块的标题 */
+.cardTitle {
+  display: block;
+  height: 40px;
+  line-height: 40px;
+  padding-left: 20px;
+  font-size: 12px;
+  font-weight: 600;
+  position: relative;
+}
+.cardTitle::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 9px;
+  width: 7px;
+  height: 20px;
+  background: #19be6b;
+  border-radius: 10px;
+}
 /* margin-right:10px */
 .marginR10{
   margin-right: 10px;

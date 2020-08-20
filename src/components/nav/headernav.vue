@@ -1,6 +1,6 @@
 <template>
   <div class="headernav_body">
-    <div class="headernav_title">ManagerSystem</div>
+    <div class="headernav_title">后台管理系统</div>
     <div class="headernav_menu">
       <ul class="headernav_ShowUserMsg_ul">
         <li class="headernav_ShowUserMsg_li">
@@ -8,18 +8,16 @@
         </li>
         <li class="headernav_ShowUserMsg_li">
           <Button
-            type="primary"
             shape="circle"
             icon="md-person"
             @click="showNowUser"
           ></Button>
         </li>
         <li class="headernav_ShowUserMsg_li">
-          <Button type="primary" shape="circle" icon="ios-text"></Button>
+          <Button shape="circle" icon="ios-text"></Button>
         </li>
         <li class="headernav_ShowUserMsg_li">
           <Button
-            type="primary"
             shape="circle"
             icon="md-log-out"
             @click="openLogOutModal"
