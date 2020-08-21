@@ -170,6 +170,7 @@ export default {
     init(type, data) {
       this.nowType = type;
       if (type === "edit") {
+        this.$refs.formList.resetFields();
         this.isDisabled = false;
         this.modalData.title = "更新判断题";
         console.log("eid:", data);

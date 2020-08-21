@@ -5,24 +5,62 @@
       <p style="color:#ff9900">填空题的空位如果有候选词，请用(),()的形式填写，并且使用英文逗号！</p>
     </div>
     <div>
-      <Form :label-colon="true" :model="FormData.data" ref="formList" :rules="FormData.rules" :label-width="80">
+      <Form
+        :label-colon="true"
+        :model="FormData.data"
+        ref="formList"
+        :rules="FormData.rules"
+        :label-width="100"
+      >
         <FormItem label="问题" prop="Question">
-          <Input :disabled="isDisabled" style="width:95%" type="textarea" autosize v-model="FormData.data.Question" placeholder="请输入问题"></Input>
+          <Input
+            :disabled="isDisabled"
+            style="width:95%"
+            type="textarea"
+            autosize
+            v-model="FormData.data.Question"
+            placeholder="请输入问题"
+          ></Input>
         </FormItem>
         <FormItem label="空位1答案" prop="Space1Answer">
-          <Input :disabled="isDisabled" style="width:95%" v-model="FormData.data.Space1Answer" placeholder="请输入空位1内容"></Input>
+          <Input
+            :disabled="isDisabled"
+            style="width:95%"
+            v-model="FormData.data.Space1Answer"
+            placeholder="请输入空位1内容"
+          ></Input>
         </FormItem>
         <FormItem label="空位2答案" prop="Space2Answer">
-          <Input :disabled="isDisabled" style="width:95%" v-model="FormData.data.Space2Answer" placeholder="请输入空位2内容"></Input>
+          <Input
+            :disabled="isDisabled"
+            style="width:95%"
+            v-model="FormData.data.Space2Answer"
+            placeholder="请输入空位2内容"
+          ></Input>
         </FormItem>
         <FormItem label="空位3答案" prop="Space3Answer">
-          <Input :disabled="isDisabled" style="width:95%" v-model="FormData.data.Space3Answer" placeholder="请输入空位3内容"></Input>
+          <Input
+            :disabled="isDisabled"
+            style="width:95%"
+            v-model="FormData.data.Space3Answer"
+            placeholder="请输入空位3内容"
+          ></Input>
         </FormItem>
         <FormItem label="空位4答案" prop="Space4Answer">
-          <Input :disabled="isDisabled" style="width:95%" v-model="FormData.data.Space4Answer" placeholder="请输入空位4内容"></Input>
+          <Input
+            :disabled="isDisabled"
+            style="width:95%"
+            v-model="FormData.data.Space4Answer"
+            placeholder="请输入空位4内容"
+          ></Input>
         </FormItem>
         <FormItem label="知识点" prop="KN">
-          <Input :disabled="isDisabled" style="width:95%" v-model="FormData.data.KN" placeholder="请输入涉及知识点"></Input>
+          <Input
+            :disabled="isDisabled"
+            style="width:95%"
+            v-model="FormData.data.KN"
+            placeholder="请输入涉及知识点"
+          ></Input>
         </FormItem>
         <FormItem label="遵循顺序" prop="Issequence">
           <RadioGroup v-model="FormData.data.Issequence">
@@ -38,7 +76,12 @@
           </RadioGroup>
         </FormItem>
         <FormItem label="涉及章节" prop="Chapter">
-          <Select :disabled="isDisabled" v-model="FormData.data.Chapter" placeholder="请选择" style="width:95%">
+          <Select
+            :disabled="isDisabled"
+            v-model="FormData.data.Chapter"
+            placeholder="请选择"
+            style="width:95%"
+          >
             <Option value="Ch1">第一章</Option>
             <Option value="Ch2">第二章</Option>
             <Option value="Ch3">第三章</Option>
@@ -64,16 +107,59 @@
 <script>
 export default {
   data() {
-    return{
-      modalData:{
-        title:'添加填空题',
-        modalBoolean: false
+    return {
+      modalData: {
+        title: "添加填空题",
+        modalBoolean: false,
       },
-      nowType: '',
+      nowType: "",
       isDisabled: false,
-      FormData:{
-        rules:{},
-        data:{
+      FormData: {
+        rules: {
+          Question: [
+            {
+              required: true,
+              message: "不能为空",
+              trigger: "blur",
+            },
+          ],
+          Space1Answer: [
+            {
+              required: true,
+              message: "不能为空",
+              trigger: "blur",
+            },
+          ],
+          Issequence: [
+            {
+              required: true,
+              message: "不能为空",
+              trigger: "change",
+            },
+          ],
+          KN: [
+            {
+              required: true,
+              message: "不能为空",
+              trigger: "blur",
+            },
+          ],
+          Chapter: [
+            {
+              required: true,
+              message: "不能为空",
+              trigger: "change",
+            },
+          ],
+          difficulty: [
+            {
+              required: true,
+              message: "不能为空",
+              trigger: "change",
+            },
+          ],
+        },
+        data: {
           Question: "",
           Space1Answer: "",
           Space2Answer: "",
@@ -83,37 +169,46 @@ export default {
           Chapter: "",
           difficulty: "",
           Issequence: "",
-        }
-      }
-    }
+        },
+      },
+    };
   },
-  methods:{
+  methods: {
     init(type, data) {
       this.nowType = type;
-      if(type === 'edit') {
+      if (type === "edit") {
+        this.$refs.formList.resetFields();
         this.isDisabled = false;
-        this.modalData.title = '更新填空题'
+        this.modalData.title = "更新填空题";
         this.FormData.data = data;
-      } else if (type === 'add') {
+      } else if (type === "add") {
         this.isDisabled = false;
-        this.$refs.formList.resetFields() 
-        this.modalData.title = '添加填空题'
-      } else if(type === 'show') {
+        this.$refs.formList.resetFields();
+        this.modalData.title = "添加填空题";
+      } else if (type === "show") {
         this.isDisabled = true;
         this.FormData.data = data;
-        this.modalData.title = '查看填空题'
+        this.modalData.title = "查看填空题";
       }
-      this.modalData.modalBoolean = true
+      this.modalData.modalBoolean = true;
     },
     closeModal() {
-      this.modalData.modalBoolean = false
+      this.modalData.modalBoolean = false;
       this.isDisabled = false;
     },
     addNewQS() {
-      this.$emit('callBack', this.FormData.data,this.nowType)
-      this.modalData.modalBoolean = false
-      this.isDisabled = false;
-    }
-  }
-}
+      this.$refs.formList.validate((valid) => {
+        if (valid) {
+          this.$emit("callBack", this.FormData.data, this.nowType);
+          this.modalData.modalBoolean = false;
+          this.isDisabled = false;
+        } else {
+          this.$Message.destroy();
+          this.$Message.error("请按要求填写");
+          return;
+        }
+      });
+    },
+  },
+};
 </script>
