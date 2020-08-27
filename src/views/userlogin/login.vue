@@ -10,9 +10,7 @@
         </div>
         <div v-if="!isshowreg" class="middlelogin_body_right login_item">
           <form>
-            <label class="login_username_lable" for="login_username"
-              >Username:</label
-            >
+            <label class="login_username_lable" for="login_username">Username:</label>
             <div class="login_username">
               <i class="el-icon-s-custom"></i>
               <input
@@ -23,9 +21,7 @@
                 placeholder="请输入您的用户名"
               />
             </div>
-            <label class="login_username_lable" for="login_password"
-              >Userpassword:</label
-            >
+            <label class="login_username_lable" for="login_password">Userpassword:</label>
             <div class="login_username">
               <i class="el-icon-s-cooperation"></i>
               <input
@@ -41,9 +37,9 @@
           <button class="login_button" @click="handleLogin()">
             <i class="el-icon-switch-button button_icon"></i>
           </button>
-          <span class="closelogin" @click="handleCloselogin()"
-            ><i class="el-icon-error"></i
-          ></span>
+          <span class="closelogin" @click="handleCloselogin()">
+            <i class="el-icon-error"></i>
+          </span>
         </div>
         <div v-if="isshowreg" class="middlelogin_body_right reg_item"></div>
       </div>
@@ -57,9 +53,9 @@
 </template>
 
 <script>
-import { localStorageSetData } from '@/util/localStorageData'
-import { setCookie } from '@/util/cookie'
-import {UserApi} from '@/api/api'
+import { localStorageSetData } from "@/util/localStorageData";
+import { setCookie } from "@/util/cookie";
+import { UserApi } from "@/api/api";
 export default {
   data() {
     return {
@@ -69,11 +65,11 @@ export default {
       radio: "0",
       discount: "admin",
       password: "123456",
-      token:null,
+      token: null,
     };
   },
-  mounted(){
-    window.history.pushState('forward', null, '#'); //在IE中必须得有这两行
+  mounted() {
+    window.history.pushState("forward", null, "#"); //在IE中必须得有这两行
     window.history.forward(1);
   },
   methods: {
@@ -91,51 +87,60 @@ export default {
     },
     handleLogin() {
       let that = this;
-      this.$Spin.show()
+      this.$Spin.show();
       UserApi.login({
         discount: this.discount,
         password: this.password,
-      }) .then((res) => {
+      })
+        .then((res) => {
           if (res.data.err == 0) {
-            localStorageSetData('nowLoginUserCount', that.discount)
-            localStorageSetData('nowLoginUserName', res.data.data[0].userName)
-            setCookie('token', res.data.token)
-            this.$Spin.hide()
-            this.Message('success', res.data.msg)
-            this.$router.push({
-              path: '/Managerindex/index'
-            });
+            if (res.data.data[0].userRole === "1") {
+              localStorageSetData("nowLoginUserCount", that.discount);
+              localStorageSetData(
+                "nowLoginUserName",
+                res.data.data[0].userName
+              );
+              setCookie("token", res.data.token);
+              this.$Spin.hide();
+              this.Message("success", res.data.msg);
+              this.$router.push({
+                path: "/Managerindex/index",
+              });
+            } else {
+              this.$Spin.hide();
+              this.Message("error", '学生无权登录此系统');
+            }
           } else {
-            this.$Spin.hide()
-            this.Message('error', res.data.msg)
+            this.$Spin.hide();
+            this.Message("error", res.data.msg);
           }
         })
         .catch((err) => {
-          console.log(err)
-          this.$Spin.hide()
-          this.Message('error', err.data.msg)
+          console.log(err);
+          this.$Spin.hide();
+          this.Message("error", err.data.msg);
         });
     },
     // 封装消息提示
     Message(type, content, duration, closable) {
-      let msDuration,msClosable;
-      if (duration === null || duration === undefined || duration === '') {
-        msDuration = 1.5
+      let msDuration, msClosable;
+      if (duration === null || duration === undefined || duration === "") {
+        msDuration = 1.5;
       } else {
-        msDuration = duration
+        msDuration = duration;
       }
-      if (closable === null || closable === undefined || closable === '') {
-        msClosable = false
+      if (closable === null || closable === undefined || closable === "") {
+        msClosable = false;
       } else {
-        msClosable = closable
+        msClosable = closable;
       }
-      this.$Message.destroy()
+      this.$Message.destroy();
       this.$Message[type]({
         content,
         duration: msDuration,
         closable: msClosable,
-      })
-    }
+      });
+    },
   },
 };
 </script>

@@ -2,6 +2,9 @@ import axios from 'axios'
 import QS from 'qs'
 
 
+let isFormData = false
+let isDownLoad = false
+
 /**
  * 设置ip环境
  * 可以切换不同的请求ip
@@ -20,6 +23,21 @@ axios.defaults.timeout = 5000
  */
 
 axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded;charset=UTF-8'
+
+function initParams(params) {
+    if (params) {
+        if (Object.keys(params).length > 0) {
+            Object.keys(params).forEach(keyName => {
+                if (params[keyName] && params[keyName] != '' && typeof params[keyName] == 'string') {
+                    params[keyName] = params[keyName].replace(new RegExp('\'', 'g'), '\\\\\'')
+                }
+            })
+        }
+        return params
+    } else {
+        return {}
+    }
+}
 
 // /**
 //  * 设置请求拦截器
@@ -81,6 +99,17 @@ axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded
 //         return Promise.reject(error.response);
 //     });
 
+function initFormRequest() {
+    isFormData = true
+    isDownLoad = false
+}
+
+function initDownLoad() {
+    isFormData = false
+    isDownLoad = true
+}
+
+
 /**
  * get方法 对应get请求
  * @param {String} url [请求的url地址]
@@ -114,5 +143,34 @@ export function post(url, params) {
             .catch(err => {
                 reject(err);
             })
+    })
+}
+
+export function formData(url, params) {
+    initFormRequest()
+    let formData = new FormData()
+    params = initParams(params)
+    for (let key in params) {
+        formData.append(key, params[key])
+    }
+    return new Promise((resolve, reject) => {
+        axios.post(url, formData).then(res => {
+            resolve(res.data)
+        }).catch(err => {
+            reject(err.data)
+        })
+    })
+}
+
+export function downLoad(url, params) {
+    initDownLoad()
+    return new Promise((resolve, reject) => {
+        axios.get(url, {
+            params: initParams(params)
+        }).then(res => {
+            resolve(res.data)
+        }).catch(err => {
+            reject(err.data)
+        })
     })
 }

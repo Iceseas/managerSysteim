@@ -8,17 +8,17 @@
         </li>
         <li class="headernav_ShowUserMsg_li">
           <Button
-            shape="circle"
+            size="large"
             icon="md-person"
             @click="showNowUser"
           ></Button>
         </li>
         <li class="headernav_ShowUserMsg_li">
-          <Button shape="circle" icon="ios-text"></Button>
+          <Button size="large" icon="ios-text"></Button>
         </li>
         <li class="headernav_ShowUserMsg_li">
           <Button
-            shape="circle"
+            size="large"
             icon="md-log-out"
             @click="openLogOutModal"
           ></Button>
