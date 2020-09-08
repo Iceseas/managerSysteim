@@ -120,6 +120,30 @@ const routes = [
         },
       },
       {
+        path: "form",
+        name: "form",
+        component: () => import ('@/views/from/form'),
+        meta: {
+          checkLogined: true,
+          title: '拖拽表单页',
+          name:['首页','拖拽表单页'],
+          path:['/Managerindex/index','/Managerindex/form'],
+          allowBack: true
+        },
+      },
+      {
+        path: "gateController",
+        name:"gateController",
+        component: () => import ('@/views/gateController/gateController'),
+        meta: {
+          checkLogined: true,
+          title: '大闸控制demo',
+          name:['首页','大闸控制demo'],
+          path:['/Managerindex/index','/Managerindex/gateController'],
+          allowBack: true
+        },
+      },
+      {
         path: "",
         redirect: "index",
       },

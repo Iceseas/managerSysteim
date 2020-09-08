@@ -20,8 +20,10 @@
     "view-design": "^4.3.2",
     "vue": "^2.6.11",
     "vue-echarts": "^5.0.0-beta.0",
+    "vue-grid-layout": "^2.3.8",
     "vue-quill-editor": "^3.0.6",
     "vue-router": "^3.1.6",
+    "vue-video-player": "^5.0.2",
     "vuex": "^3.1.2",
     "vuex-along": "^1.2.10",
     "vuex-persistedstate": "^3.0.1"

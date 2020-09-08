@@ -8,7 +8,7 @@
         <Sider hide-trigger :style="{ background: '#fff' }">
           <asideNav></asideNav>
         </Sider>
-        <Layout :style="{ padding: '0 24px 24px', minWidth: '1200px'  }">
+        <Layout :style="{ padding: '0 24px 24px', minWidth: '1200px',overflowY: 'scroll',height:contentHeight +'px'  }">
           <Breadcrumb :style="{ margin: '24px 0'}">
             <BreadcrumbItem :to="path(index)" v-for="(item, index) in $route.meta.name" :key="index">{{item}}</BreadcrumbItem>
           </Breadcrumb>
@@ -31,12 +31,24 @@ import asideNav from "@/components/nav/asideNav";
 export default {
   data() {
     return {
-      mainHeight: 0,
+      contentHeight: 0
     };
   },
   components: {
     headerNav: headerNav,
     asideNav: asideNav,
+  },
+  mounted() {
+    window.onresize = () => {
+      this.$nextTick(() => {
+        this.contentHeight = document.body.clientHeight - 65;
+      });
+    };
+    this.$nextTick(() => {
+      this.contentHeight = document.body.clientHeight - 65;
+    });
+    console.log(document.body.clientHeight)
+    console.log('1',this.contentHeight)
   },
   methods: {},
   computed:{
@@ -45,9 +57,6 @@ export default {
         return this.$route.meta.path[index]
       }
     }
-  },
-  mounted() {
-    
   },
 };
 </script>
@@ -61,7 +70,7 @@ export default {
 .layout {
   background: #f5f7f9;
   position: relative;
-  overflow: auto;
+  height: 915px;
 }
 .layout-logo {
   width: 100px;
