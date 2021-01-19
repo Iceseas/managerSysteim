@@ -1,9 +1,9 @@
 import axios from 'axios'
-import QS from 'qs'
+// import QS from 'qs'
 
 
-let isFormData = false
-let isDownLoad = false
+// let isFormData = false
+// let isDownLoad = false
 
 /**
  * 设置ip环境
@@ -100,13 +100,13 @@ axios.interceptors.response.use(
     });
 
 function initFormRequest() {
-    isFormData = true
-    isDownLoad = false
+    // isFormData = true
+    // isDownLoad = false
 }
 
 function initDownLoad() {
-    isFormData = false
-    isDownLoad = true
+    // isFormData = false
+    // isDownLoad = true
 }
 
 

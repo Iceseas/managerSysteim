@@ -1,4 +1,4 @@
-import {get, post, formData, baseURL } from './http'
+import { post } from './http'
 export const UserApi = {
     login: params => post('ManagerCount/api/checkLogin', params), //登录接口
     logOut: params => post('ManagerCount/api/logOut', params), //登出接口
@@ -18,6 +18,7 @@ export const questionApi = {
     addDecideData: params => post('addQuestion/api/addDecideData', params), //添加判断题接口
     addSingleData: params => post('addQuestion/api/addSingleData', params), //添加单选题接口
     addVacancyData: params => post('addQuestion/api/addVacancyData', params), //添加填空题接口
+    addSubjectiveData: params => post('addQuestion/api/addSubjectiveData', params), //添加主观题接口
     // 获取
     getDecideList: params => post('getQuestion/api/getDecideList', params), //用户列表查询接口
     getSingleList: params => post('getQuestion/api/getSingleList', params), //用户列表查询接口
