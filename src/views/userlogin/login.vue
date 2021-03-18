@@ -56,6 +56,7 @@
 import { localStorageSetData } from "@/util/localStorageData";
 import { setCookie } from "@/util/cookie";
 import { UserApi } from "@/api/api";
+import { userPowerApi } from '@/api/api'
 export default {
   data() {
     return {
@@ -71,6 +72,23 @@ export default {
   mounted() {
     window.history.pushState("forward", null, "#"); //在IE中必须得有这两行
     window.history.forward(1);
+    // 查询系统菜单
+    this.$store.dispatch("showSystemMenu");
+    // 拿到全部的menu
+    let menuArr = [];
+    this.$router.options.routes.forEach (item=>{
+      if('children' in item) {
+        item.children.forEach(element => {
+          if(element.meta && element.meta.selfpath) {
+            menuArr.push(element.meta.selfpath)
+          }
+        });
+      }
+    }) 
+    // 深拷贝
+    // this.$store.state.systemMenus = [...menuArr]
+    // 存入localstorage
+    localStorageSetData('systemMenus', menuArr);
   },
   methods: {
     handleShowLogin() {
@@ -91,29 +109,38 @@ export default {
       UserApi.login({
         discount: this.discount,
         password: this.password,
-      })
+      }) 
         .then((res) => {
           if (res.data.err == 0) {
-            if (res.data.data[0].userRole === "1") {
+            if (res.data.data[0].userRole === "1" || res.data.data[0].userRole === "admin") {
+              // 将账户和用户名存入localstorage中
               localStorageSetData("nowLoginUserCount", that.discount);
-              localStorageSetData(
-                "nowLoginUserName",
-                res.data.data[0].userName
-              );
+              localStorageSetData("nowLoginUserName",res.data.data[0].userName);
+              // 设置cookie
               setCookie("token", res.data.token);
               this.$Spin.hide();
               this.Message("success", res.data.msg);
-              this.$router.push({
-                path: "/Managerindex/index",
-              });
             } else {
               this.$Spin.hide();
               this.Message("error", '学生无权登录此系统');
+              return;
             }
           } else {
             this.$Spin.hide();
             this.Message("error", res.data.msg);
           }
+          // 查询用户的菜单配置情况
+          return userPowerApi.showData({
+            discount: this.discount
+          })
+        })
+        .then((res)=>{
+          // 设置全局变量setUserMenus
+          this.$store.commit("setUserMenus", res.data.list[0].RoleMenuArr);
+          // 跳转页面
+          this.$router.push({
+            path: "/Managerindex/index",
+          });
         })
         .catch((err) => {
           console.log(err);
@@ -121,6 +148,7 @@ export default {
           this.Message("error", err.data.msg);
         });
     },
+    // 目前系统所有的菜单
     // 封装消息提示
     Message(type, content, duration, closable) {
       let msDuration, msClosable;

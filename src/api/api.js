@@ -13,6 +13,11 @@ export const managerApi = {
     getList: params => post('ManagerCount/api/getUserList', params), //用户列表查询接口
 }
 
+export const userPowerApi = {
+    showData: params => post('userPower/api/userMenuPowerShow', params), //查询用户的菜单权限配置情况
+    saveData: params => post('userPower/api/userMenuPowerControl', params), //保存用户的菜单配置
+}
+
 export const questionApi = {
     // 添加
     addDecideData: params => post('addQuestion/api/addDecideData', params), //添加判断题接口

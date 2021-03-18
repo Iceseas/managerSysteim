@@ -10,7 +10,7 @@ const routes = [
     name: "login",
     meta:{
       allowBack: false,
-      title:'首页'
+      title:'首页',
     },
     component: () => import ('@/views/userlogin/login'),
   },
@@ -31,6 +31,7 @@ const routes = [
           checkLogined: true,
           title: '首页',
           name:['首页'],
+          selfpath:'首页-/Managerindex/index',
           path:['/Managerindex/index'],
           allowBack: false
         },
@@ -42,6 +43,7 @@ const routes = [
         meta: {
           checkLogined: true,
           title: '访问记录',
+          selfpath:'访问记录-/Managerindex/accesslog',
           name:['首页','访问记录'],
           path:['/Managerindex/index','/Managerindex/accesslog'],
           allowBack: true
@@ -66,6 +68,7 @@ const routes = [
         meta: {
           checkLogined: true,
           title: '主观题',
+          selfpath:'主观题-/Managerindex/subjectiveItem',
           name:['首页','题库管理','主观题'],
           path:['/Managerindex/index','/Managerindex/question','/Managerindex/subjectiveItem'],
           allowBack: true
@@ -78,6 +81,7 @@ const routes = [
         meta: {
           checkLogined: true,
           title: '判断题',
+          selfpath:'判断题-/Managerindex/decide',
           name:['首页','题库管理','判断题'],
           path:['/Managerindex/index','/Managerindex/question','/Managerindex/decide'],
           allowBack: true
@@ -90,6 +94,7 @@ const routes = [
         meta: {
           checkLogined: true,
           title: '单选题',
+          selfpath:'单选题-/Managerindex/single',
           name:['首页','题库管理','单选题'],
           path:['/Managerindex/index','/Managerindex/question','/Managerindex/single'],
           allowBack: true
@@ -102,6 +107,7 @@ const routes = [
         meta: {
           checkLogined: true,
           title: '填空题',
+          selfpath:'填空题-/Managerindex/vacancy',
           name:['首页','题库管理','填空题'],
           path:['/Managerindex/index','/Managerindex/question','/Managerindex/vacancy'],
           allowBack: true
@@ -114,6 +120,7 @@ const routes = [
         meta: {
           checkLogined: true,
           title: '用户管理',
+          selfpath:'用户管理-/Managerindex/userCenter',
           name:['首页','用户管理'],
           path:['/Managerindex/index','/Managerindex/userCenter'],
           allowBack: true
@@ -126,6 +133,7 @@ const routes = [
         meta: {
           checkLogined: true,
           title: '拖拽表单页',
+          selfpath:'拖拽表单页-/Managerindex/form',
           name:['首页','拖拽表单页'],
           path:['/Managerindex/index','/Managerindex/form'],
           allowBack: true
@@ -138,8 +146,22 @@ const routes = [
         meta: {
           checkLogined: true,
           title: '大闸控制demo',
+          selfpath:'大闸控制demo-/Managerindex/gateController',
           name:['首页','大闸控制demo'],
           path:['/Managerindex/index','/Managerindex/gateController'],
+          allowBack: true
+        },
+      },
+      {
+        path: "powerControl",
+        name: "powerControl",
+        component: () => import ('@/views/manager/powerControl'),
+        meta: {
+          checkLogined: true,
+          title: '权限管理',
+          selfpath:'权限管理-/Managerindex/powerControl',
+          name:['首页','权限管理'],
+          path:['/Managerindex/index','/Managerindex/powerControl'],
           allowBack: true
         },
       },

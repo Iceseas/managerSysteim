@@ -47,8 +47,6 @@ export default {
     this.$nextTick(() => {
       this.contentHeight = document.body.clientHeight - 65;
     });
-    console.log(document.body.clientHeight)
-    console.log('1',this.contentHeight)
   },
   methods: {},
   computed:{
