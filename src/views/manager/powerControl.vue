@@ -56,7 +56,7 @@
             size="large"
             >超管</Tag
           >
-          <Tag v-else color="purple" size="large">老师</Tag>
+          <Tag v-else color="purple" size="large">学生</Tag>
         </template>
         <template slot-scope="{ row }" slot="status">
           <Tag v-if="row.status === '1'" color="green" size="large">启用</Tag>

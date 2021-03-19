@@ -187,7 +187,7 @@ router.beforeEach((to, from, next) => {
     document.title = to.meta.title
   }
   if (to.meta.checkLogined) {
-    if (getCookie("token") == null) {
+    if (getCookie("token") == null || !getCookie("token") ) {
       alert('首先登录系统！')
       next("login");
     } else {

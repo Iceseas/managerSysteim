@@ -27,7 +27,9 @@ export default {
       userMenuConfig:{
         discount: '',
         RoleMenuArr: null
-      }
+      },
+      // 临时存放用户配置的菜单情况
+      cacheTreeNodes: []
     }
   },
   methods:{
@@ -36,17 +38,17 @@ export default {
       // 设置此时点击的用户是谁-方便后期设置权限ajax
       this.userMenuConfig.discount = row.discount;
       // 查找用户对应的菜单配置情况并创建菜单树
-      this.showUserMenuAjax();
+      this.showUserMenuAjax(row);
       // 显示modal
       this.modalData.modalBoolean = true;
     },
     // 查询用户菜单配置情况
-    showUserMenuAjax(){
+    showUserMenuAjax(row){
       userPowerApi.showData({
-        discount: this.userMenuConfig.discount
+        discount: row.discount
       })
       .then((res) => {
-        this.treeNodes = res.data.list[0].RoleMenuArr
+        this.treeNodes = [...res.data.list[0].RoleMenuArr]
       })
       .catch(err=>{
         console.log(err)
@@ -54,9 +56,41 @@ export default {
     },
     // 设置权限
     saveMenuPowerAjax(){
+      // 存放配置的菜单
+      let ajaxMenuArr = [];
+      // 什么都没有修改的情况下-首页是必须有的项
+      if (this.cacheTreeNodes.length === 1) {
+        ajaxMenuArr = [{
+          "title" : "首页",
+          "pathName" : "index",
+          "expand" : true,
+          "disabled" : true,
+          "checked" : false,
+          "key" : "title首页pathNameindex",
+          "path" : "/Managerindex/index"
+        }];
+      // 去掉所有菜单的情况下或者是那么都没有修改过的情况下
+      } else if(this.cacheTreeNodes.length === 0){
+        return;
+      } else {
+        // 处理配置情况
+        for(let i = 0; i < this.cacheTreeNodes.length; i++) {
+          if(!this.cacheTreeNodes[i].children){
+            ajaxMenuArr.push({  
+              "title" : this.cacheTreeNodes[i].title,
+              "pathName" : this.cacheTreeNodes[i].pathName,
+              "expand" : this.cacheTreeNodes[i].expand,
+              "checked" : this.cacheTreeNodes[i].checked,
+              "key" : this.cacheTreeNodes[i].key,
+              "path" : this.cacheTreeNodes[i].path
+            })
+          }
+        }
+      }
+      // 设置菜单配置情况ajax
       userPowerApi.saveData({
         discount: this.userMenuConfig.discount,
-        RoleMenuArr: this.userMenuConfig.RoleMenuArr
+        userRoleMenuArr: ajaxMenuArr
       })
       .then(res=>{
         this.Message('success', res.data.msg)
@@ -67,17 +101,19 @@ export default {
     },
     cancel(){
       this.treeNodes = [];
+      this.cacheTreeNodes = [];
       this.modalData.modalBoolean = false;
     },
     submit(){
       // 设置权限
       this.saveMenuPowerAjax();
       this.treeNodes = [];
+      this.cacheTreeNodes = [];
       this.modalData.modalBoolean = false;
     },
     // 选择的菜单
     checkMenuNodes(arr){
-      console.log(arr)
+      this.cacheTreeNodes = [...arr];
     },
     // 封装消息提示
     Message(type, content, duration, closable) {
