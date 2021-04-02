@@ -1,9 +1,9 @@
 <template>
   <div class="headernav_body">
-    <div class="headernav_title">后台管理系统</div>
+    <div class="headernav_title notToSwitchDark">后台管理系统</div>
     <div class="headernav_menu">
       <ul class="headernav_ShowUserMsg_ul">
-        <li class="headernav_ShowUserMsg_li">
+        <li class="headernav_ShowUserMsg_li notToSwitchDark">
           欢迎您:{{ welcomeManager }} 
         </li>
         <li class="headernav_ShowUserMsg_li">
@@ -14,7 +14,10 @@
           ></Button>
         </li>
         <li class="headernav_ShowUserMsg_li">
-          <Button size="large" icon="ios-text"></Button>
+          <Button size="large" 
+            icon="md-contrast"
+            @click="switchTheme"
+            ></Button>
         </li>
         <li class="headernav_ShowUserMsg_li">
           <Button
@@ -61,6 +64,7 @@ export default {
       activeIndex2: "1",
       welcomeManager: "",
       showUserMsgModal: false,
+      isDarkTheme: false
     };
   },
   mounted() {
@@ -116,6 +120,20 @@ export default {
     },
     closeShowUser() {
       this.showUserMsgModal = false;
+    },
+    // 切换黑暗模式
+    switchTheme() {
+      let headNav = document.querySelector(".headernav_ShowUserMsg_li");
+      let htmlNode = document.querySelector("html");
+      if (!this.isDarkTheme) {
+        htmlNode.style.filter = "invert(1) hue-rotate(180deg)";
+        headNav.style.filter = "invert(1) hue-rotate(180deg)";
+        this.isDarkTheme = !this.isDarkTheme
+      } else {
+        htmlNode.style.filter = "";
+        headNav.style.filter = "";
+        this.isDarkTheme = !this.isDarkTheme
+      }
     },
     // 封装消息提示
     Message(type, content, duration, closable) {

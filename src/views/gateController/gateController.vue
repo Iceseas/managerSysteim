@@ -13,7 +13,7 @@
     <div class="videos">
       <div class="explainTitle">大闸监视</div>
       <div class="video_body">
-        <div class="video_windows">
+        <div class="video_windows notToSwitchDark">
           <div class="video" @click.stop="handleCheckVideo(index)">
             <video-player
               class="video-player vjs-custom-skin"

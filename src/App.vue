@@ -35,7 +35,7 @@ export default {
           removeCookie("token");
         }
       })
-      .catch((err) => {
+      .catch(() => {
         localStorageRemoveData("nowLoginUserCount");
         removeCookie("token");
       });
@@ -48,11 +48,20 @@ html,
 body {
   height: 100%;
 }
+
+html[style='filter: invert(1) hue-rotate(180deg);'] 
+.notToSwitchDark{
+  filter:invert(1) hue-rotate(180deg)
+}
+
+html{
+  transition: color 0.3s, background-color 0.3s;
+}
+
 * {
   padding: 0;
   margin: 0;
-  font-family: "Helvetica Neue", Helvetica, "PingFang SC", "Hiragino Sans GB",
-    "Microsoft YaHei", "微软雅黑", Arial, sans-serif;
+  font-family: "Arial","Microsoft YaHei","黑体","宋体",sans-serif;
 }
 .System_body {
   height: 100%;

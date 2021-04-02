@@ -5,7 +5,7 @@
         <accessData></accessData>
       </Col>
     </Row>
-    <Row :gutter="20" style="margin-top:20px">
+    <Row :gutter="20" class="notToSwitchDark" style="margin-top:20px">
       <Col span="8">
         <div class="userMouth">
           <p class="userouthalive_p">今日活跃用户</p>

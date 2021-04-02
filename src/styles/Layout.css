@@ -63,3 +63,9 @@
 .marginR10{
   margin-right: 10px;
 }
+
+/* 适配黑暗模式 */
+/* 不做反转颜色的类 */
+.notToSwitchDark{
+  
+}

@@ -1,5 +1,5 @@
 <template>
-  <div class="login_body">
+  <div class="login_body notToSwitchDark">
     <transition name="showlogin">
       <div v-if="isshowlogin" class="middlelogin_body">
         <div class="middlelogin_body_left">
@@ -195,6 +195,7 @@ export default {
   min-height: 560px;
   border-radius: 10px;
   overflow: hidden;
+  box-shadow: 0 0 10px #222;
 }
 .middlelogin_body_left,
 .middlelogin_body_right {
@@ -287,8 +288,6 @@ export default {
   opacity: 0;
 }
 .login_title {
-  font-family: Microsoft YaHei, Heiti SC, tahoma, arial, Hiragino Sans GB,
-    "\5B8B\4F53", sans-serif;
   font-size: 20px;
   color: rgba(247, 241, 227, 1);
   font-weight: 600;
@@ -318,7 +317,8 @@ export default {
 .login_password_input {
   min-width: 250px;
   border-radius: 10px;
-  background: rgba(72, 84, 96, 0.9);
+  box-shadow: 0 0 3px #2a3535;
+  background: rgba(44, 52, 60, 0.9);
   color: #f7f1e3;
   outline: none;
   border: none;
