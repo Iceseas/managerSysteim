@@ -8,6 +8,7 @@
 import {
   localStorageGetData,
   localStorageRemoveData,
+  localStorageSetData
 } from "@/util/localStorageData";
 import axios from "axios";
 import { removeCookie } from "@/util/cookie";
@@ -18,6 +19,7 @@ export default {
     };
   },
   mounted() {
+    localStorageSetData("isDarkTheme", false);
     this.welcomeManager = localStorageGetData("nowLoginUserCount");
   },
   components: {},

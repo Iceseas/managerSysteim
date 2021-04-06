@@ -1,7 +1,7 @@
 <template>
   <div class="layout">
     <Layout>
-      <Header :style="{ background:'#3887be' }">
+      <Header :style="{ background:'#fff',borderBottom: '1px solid #eee' }">
         <headerNav></headerNav>
       </Header>
       <Layout>

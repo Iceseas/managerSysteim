@@ -5,6 +5,7 @@
     </template>
     <template slot-scope="{ row, index }" slot="action">
       <Button
+      class="notToSwitchDark"
         type="primary"
         size="small"
         style="margin-right: 5px"

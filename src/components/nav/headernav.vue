@@ -1,9 +1,9 @@
 <template>
   <div class="headernav_body">
-    <div class="headernav_title notToSwitchDark">后台管理系统</div>
+    <div class="headernav_title">后台管理系统</div>
     <div class="headernav_menu">
       <ul class="headernav_ShowUserMsg_ul">
-        <li class="headernav_ShowUserMsg_li notToSwitchDark">
+        <li class="headernav_ShowUserMsg_li">
           欢迎您:{{ welcomeManager }} 
         </li>
         <li class="headernav_ShowUserMsg_li">
@@ -30,7 +30,7 @@
     </div>
     <!-- 当前用户显示信息 -->
     <Modal v-model="showUserMsgModal" width="360">
-      <div slot="header" style="color:#f60;text-align:center">
+      <div slot="header" style="color:#2d3436;text-align:center">
         <p>当前用户</p>
       </div>
       <div style="text-align:center">
@@ -53,6 +53,7 @@
 <script>
 import {
   localStorageGetData,
+  localStorageSetData,
   localStorageRemoveData,
 } from "@/util/localStorageData";
 import {UserApi} from '@/api/api'
@@ -64,12 +65,12 @@ export default {
       activeIndex2: "1",
       welcomeManager: "",
       showUserMsgModal: false,
-      isDarkTheme: false
     };
   },
   mounted() {
     this.welcomeManager = localStorageGetData("nowLoginUserName");
     this.nowOnlineManager = localStorageGetData("nowLoginUserCount");
+    
   },
   methods: {
     // 退出
@@ -107,7 +108,7 @@ export default {
             });
            // 禁用后退
           history.pushState(null, null, document.URL);
-          window.addEventListener("popstate",function(e) {  
+          window.addEventListener("popstate",function() {  
           history.pushState(null, null, document.URL);
           }, false);
         },
@@ -125,14 +126,14 @@ export default {
     switchTheme() {
       let headNav = document.querySelector(".headernav_ShowUserMsg_li");
       let htmlNode = document.querySelector("html");
-      if (!this.isDarkTheme) {
+      if (! eval(localStorageGetData("isDarkTheme"))) {
         htmlNode.style.filter = "invert(1) hue-rotate(180deg)";
         headNav.style.filter = "invert(1) hue-rotate(180deg)";
-        this.isDarkTheme = !this.isDarkTheme
+        localStorageSetData("isDarkTheme", !eval(localStorageGetData("isDarkTheme")))
       } else {
         htmlNode.style.filter = "";
         headNav.style.filter = "";
-        this.isDarkTheme = !this.isDarkTheme
+        localStorageSetData("isDarkTheme", !eval(localStorageGetData("isDarkTheme")))
       }
     },
     // 封装消息提示
@@ -191,7 +192,7 @@ export default {
   width: 100px;
   min-width: 90px;
   list-style: none;
-  color: #f7f1e3;
+  color: #2d3436;
   text-align: center;
   box-sizing: border-box;
 }
@@ -204,9 +205,9 @@ export default {
   font-size: 20px;
   font-family: Microsoft YaHei, Heiti SC, tahoma, arial, Hiragino Sans GB,
     "\5B8B\4F53", sans-serif;
-  font-weight: 600;
+  font-weight: 700;
   min-width: 200px;
-  color: #f7f1e3;
+  color: #2d3436;
 }
 
 .headernav_menu {
@@ -230,7 +231,7 @@ export default {
 }
 .headernav_ShowUserMsg_li {
   height: 100%;
-  color: #fff;
+  color: #2d3436;
   text-align: center;
   box-sizing: border-box;
   font-size: 14px;

@@ -4,8 +4,8 @@
       <div class="IcontainerTopRow">
         <div class="IcontainerTopTitle">查询列表</div>
         <div class="IcontainerTopBtns">
-          <Button class="marginR10" type="primary" @click="searchFn">查询</Button>
-          <Button type="primary" @click="resetFn">重置</Button>
+          <Button class="marginR10 notToSwitchDark" type="primary" @click="searchFn">查询</Button>
+          <Button class="notToSwitchDark" type="primary" @click="resetFn">重置</Button>
         </div>
       </div>
       <div class="searchFormBody">
@@ -53,9 +53,9 @@
           <Tag v-else size="large" color="red">困难</Tag>
         </template>
         <template slot-scope="{ row, index }" slot="action">
-          <Button class="marginR10" type="info" @click="showFn(row)">查看</Button>
-          <Button class="marginR10" type="success" @click="editFn(row)">修改</Button>
-          <Button type="error" @click="delFn(row)">删除</Button>
+          <Button class="marginR10 notToSwitchDark" type="info" @click="showFn(row)">查看</Button>
+          <Button class="marginR10 notToSwitchDark" type="success" @click="editFn(row)">修改</Button>
+          <Button class="notToSwitchDark" type="error" @click="delFn(row)">删除</Button>
         </template>
       </Table>
     </div>
