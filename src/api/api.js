@@ -1,6 +1,8 @@
 import { post } from './http'
 export const UserApi = {
     login: params => post('ManagerCount/api/checkLogin', params), //登录接口
+    checkdiscount: params => post('ManagerCount/api/checkDiscount', params), //检查用户名
+    register: params => post('ManagerCount/api/regManagerUser', params), //注册接口
     logOut: params => post('ManagerCount/api/logOut', params), //登出接口
 }
 
@@ -16,6 +18,7 @@ export const managerApi = {
 export const userPowerApi = {
     showData: params => post('userPower/api/userMenuPowerShow', params), //查询用户的菜单权限配置情况
     saveData: params => post('userPower/api/userMenuPowerControl', params), //保存用户的菜单配置
+    addData: params => post('userPower/api/userBaseMenuPowerAdd', params) // 注册时增加基本菜单配置
 }
 
 export const questionApi = {

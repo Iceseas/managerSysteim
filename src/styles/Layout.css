@@ -5,7 +5,7 @@
 }
 /* 列表的块样式 */
 .Icontainer {
-  border: 1px solid #ebeef5;
+  border: 0px solid #ebeef5;
   box-sizing: border-box;
   margin-bottom: 25px;
   flex-direction: column;

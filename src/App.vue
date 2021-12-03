@@ -8,7 +8,7 @@
 import {
   localStorageGetData,
   localStorageRemoveData,
-  localStorageSetData
+  localStorageSetData,
 } from "@/util/localStorageData";
 import axios from "axios";
 import { removeCookie } from "@/util/cookie";
@@ -51,19 +51,18 @@ body {
   height: 100%;
 }
 
-html[style='filter: invert(1) hue-rotate(180deg);'] 
-.notToSwitchDark{
-  filter:invert(1) hue-rotate(180deg)
+html[style="filter: invert(1) hue-rotate(180deg);"] .notToSwitchDark {
+  filter: invert(1) hue-rotate(180deg);
 }
 
-html{
+html {
   transition: color 0.3s, background-color 0.3s;
 }
 
 * {
   padding: 0;
   margin: 0;
-  font-family: "Arial","Microsoft YaHei","黑体","宋体",sans-serif;
+  font-family: "Arial", "Microsoft YaHei", "黑体", "宋体", sans-serif;
 }
 .System_body {
   height: 100%;

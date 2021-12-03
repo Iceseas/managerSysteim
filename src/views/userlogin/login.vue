@@ -10,7 +10,9 @@
         </div>
         <div v-if="!isshowreg" class="middlelogin_body_right login_item">
           <form>
-            <label class="login_username_lable" for="login_username">Username:</label>
+            <label class="login_username_lable" for="login_username"
+              >Username:</label
+            >
             <div class="login_username">
               <i class="el-icon-s-custom"></i>
               <input
@@ -21,7 +23,9 @@
                 placeholder="请输入您的用户名"
               />
             </div>
-            <label class="login_username_lable" for="login_password">Userpassword:</label>
+            <label class="login_username_lable" for="login_password"
+              >Userpassword:</label
+            >
             <div class="login_username">
               <i class="el-icon-s-cooperation"></i>
               <input
@@ -36,6 +40,9 @@
           </form>
           <button class="login_button" @click="handleLogin()">
             <i class="el-icon-switch-button button_icon"></i>
+          </button>
+          <button class="login_button" @click="handleRegister">
+            <i class="el-icon-edit-outline button_icon"></i>
           </button>
           <span class="closelogin" @click="handleCloselogin()">
             <i class="el-icon-error"></i>
@@ -52,21 +59,21 @@
   </div>
 </template>
 
-<script>
+<script> 
 import { localStorageSetData } from "@/util/localStorageData";
 import { setCookie } from "@/util/cookie";
 import { UserApi } from "@/api/api";
-import { userPowerApi } from '@/api/api'
+import { userPowerApi } from "@/api/api";
 export default {
   data() {
     return {
       ishowimg: true,
       isshowlogin: false,
       isshowreg: false,
-      radio: "0",
-      discount: "admin",
-      password: "123456",
+      discount: "",
+      password: "",
       token: null,
+      radio: "1",
     };
   },
   mounted() {
@@ -76,19 +83,19 @@ export default {
     this.$store.dispatch("showSystemMenu");
     // 拿到全部的menu
     let menuArr = [];
-    this.$router.options.routes.forEach (item=>{
-      if('children' in item) {
-        item.children.forEach(element => {
-          if(element.meta && element.meta.selfpath) {
-            menuArr.push(element.meta.selfpath)
+    this.$router.options.routes.forEach((item) => {
+      if ("children" in item) {
+        item.children.forEach((element) => {
+          if (element.meta && element.meta.selfpath) {
+            menuArr.push(element.meta.selfpath);
           }
         });
       }
-    }) 
+    });
     // 深拷贝
     // this.$store.state.systemMenus = [...menuArr]
     // 存入localstorage
-    localStorageSetData('systemMenus', menuArr);
+    localStorageSetData("systemMenus", menuArr);
   },
   methods: {
     handleShowLogin() {
@@ -106,47 +113,62 @@ export default {
     handleLogin() {
       let that = this;
       this.$Spin.show();
-      UserApi.login({
-        discount: this.discount,
-        password: this.password,
-      }) 
-        .then((res) => {
-          if (res.data.err == 0) {
-            if (res.data.data[0].userRole === "1" || res.data.data[0].userRole === "admin") {
-              // 将账户和用户名存入localstorage中
-              localStorageSetData("nowLoginUserCount", that.discount);
-              localStorageSetData("nowLoginUserName",res.data.data[0].userName);
-              // 设置cookie
-              setCookie("token", res.data.token);
-              this.$Spin.hide();
-              this.Message("success", res.data.msg);
+      console.log(this.password);
+      this.password = this.$md5(this.password);
+      this.$nextTick(() => {
+        console.log(this.discount, this.password)
+        UserApi.login({
+          discount: this.discount,
+          password: this.password,
+        })
+          .then((res) => {
+            if (res.data.err == 0) {
+              if (
+                res.data.data[0].userRole === "1" ||
+                res.data.data[0].userRole === "admin"
+              ) {
+                // 将账户和用户名存入localstorage中
+                localStorageSetData("nowLoginUserCount", that.discount);
+                localStorageSetData(
+                  "nowLoginUserName",
+                  res.data.data[0].userName
+                );
+                // 设置cookie
+                setCookie("token", res.data.token);
+                this.$Spin.hide();
+                this.Message("success", res.data.msg);
+              } else {
+                this.$Spin.hide();
+                this.Message("error", "学生无权登录此系统");
+                return;
+              }
             } else {
               this.$Spin.hide();
-              this.Message("error", '学生无权登录此系统');
-              return;
+              this.Message("error", res.data.msg);
             }
-          } else {
-            this.$Spin.hide();
-            this.Message("error", res.data.msg);
-          }
-          // 查询用户的菜单配置情况
-          return userPowerApi.showData({
-            discount: this.discount
+            // 查询用户的菜单配置情况
+            return userPowerApi.showData({
+              discount: this.discount,
+            });
           })
-        })
-        .then((res)=>{
-          // 设置全局变量setUserMenus
-          this.$store.commit("setUserMenus", res.data.list[0].RoleMenuArr);
-          // 跳转页面
-          this.$router.push({
-            path: "/Managerindex/index",
+          .then((res) => {
+            // 设置全局变量setUserMenus
+            this.$store.commit("setUserMenus", res.data.list[0].RoleMenuArr);
+            // 跳转页面
+            this.$router.push({
+              path: "/Managerindex/index",
+            });
+          })
+          .catch((err) => {
+            console.log(err);
+            this.$Spin.hide();
+            this.Message("error", err.data.msg);
           });
-        })
-        .catch((err) => {
-          console.log(err);
-          this.$Spin.hide();
-          this.Message("error", err.data.msg);
-        });
+      });
+    },
+    // 注册用户
+    handleRegister() {
+      this.$router.replace("/register");
     },
     // 目前系统所有的菜单
     // 封装消息提示
@@ -379,6 +401,7 @@ input:-ms-input-placeholder {
   min-width: 200px;
 }
 .login_button {
+  display: inline-block;
   width: 60px;
   height: 60px;
   outline: none;

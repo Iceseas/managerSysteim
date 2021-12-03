@@ -15,6 +15,15 @@ const routes = [
     component: () => import ('@/views/userlogin/login'),
   },
   {
+    path: "/register",
+    name: "register",
+    meta:{
+      allowBack: false,
+      title:'注册',
+    },
+    component: () => import ('@/views/userlogin/register'),
+  },
+  {
     path: "/Managerindex",
     name: "Managerindex",
     component: () => import ('@/views/home/managerSystemIndex'),
